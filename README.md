@@ -3,5 +3,5 @@ Proyecto I
 
 > Carlos Artavia | 
 > Andrey Campos | 
-> Fabián Hernandéz| 
+> Fabián Hernandéz | 
 > Omar Segura | 
