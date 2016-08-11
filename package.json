@@ -1,0 +1,24 @@
+{
+  "name": "laberinto",
+  "version": "0.0.1",
+  "description": "Mostrar y Solucionar Laberintos con progamación Funcional",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.14.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artaviapcarlos/paradigmasLab.git"
+  },
+  "author": "Omar Segura, Fabián Hernández, Andrey Campos, Carlos Artavia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/artaviapcarlos/paradigmasLab/issues"
+  },
+  "homepage": "https://github.com/artaviapcarlos/paradigmasLab#readme"
+}
