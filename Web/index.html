@@ -1,11 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="cssFiles/styles.css"/>
-    <script src="scripts/scripts.js"></script>
+    <link rel="stylesheet" href="css/styles.css"/>
+    <script src="js/scripts.js"></script>
     <title>Laberinto Online</title>
   </head>
-  <body onload="alerta();">
-    <h1>Beta del Laberinto</h1>
+  <body>
+    <div id="wrapper">
+      <header>
+        <nav></nav>
+      <header>
+      <div id="content">
+        <h1>Beta del Laberinto</h1>
+          <table>
+            <tr>
+              <td>Largo:</td>
+              <td>Ancho:</td>
+            </tr>
+            <tr>
+              <td><input type="text"/></td>
+              <td><input type="text"/></td>
+            </tr>
+            <tr colspan="2">
+              <td><input type="button" value="Crear Laberinto" onclick="alerta();"></td>
+            </tr>
+          </table>
+      </div>
+      <footer></footer>
+    </div>
   <body>
 </html>
