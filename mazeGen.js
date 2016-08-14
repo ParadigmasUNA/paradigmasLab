@@ -12,6 +12,7 @@ SVG = {
     canvas.setAttribute('width', width);
     canvas.setAttribute('height', height);
     canvas.setAttribute('viewBox', '0 0 '+width+' '+height);
+    canvas.style.backgroundColor = 'black';
     canvasOverlay.setAttribute('version', '1.1');
     canvasOverlay.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     canvasOverlay.setAttribute('width', width);
@@ -29,7 +30,7 @@ SVG = {
     aLine.setAttribute('y2', y2);
     aLine.setAttribute('stroke', color);
     aLine.setAttribute('stroke-width', w);
-    aLine.setAttribute('stroke-linecap','round');
+    aLine.setAttribute('stroke-linecap','square');
     return aLine;
   }
 }
