@@ -5,6 +5,10 @@ let canvas;
 let columnas;
 let filas;
 let ctx;
+let LEFT = 0;
+let TOP = 1;
+let RIGHT  = 2;
+let BOTTOM = 3;
 
 function prueba(){
   longCelda = 25;
@@ -61,24 +65,45 @@ function drawBack(){
         //revisar cual opcion fue
         let celdaVecina;
         if(opcion === 1){ //Escogio el vecino de Abajo
+          celdaActual.bordes[BOTTOM] = false;
           celdaVecina = laberinto[celdaActual.index+1];
+          celdaVecina.bordes[TOP] = false;
+          limpiarRect(celdaActual.x,celdaActual.y);
+          dibujarCelda(celdaActual.x,celdaActual.y,celdaActual.bordes);
           limpiarRect(celdaVecina.x,celdaVecina.y);
-          dibujarSinTop(celdaVecina.x,celdaVecina.y);
+        //  dibujarSinTop(celdaVecina.x,celdaVecina.y);
+          dibujarCelda(celdaVecina.x,celdaVecina.y,celdaVecina.bordes);
         }
         else if(opcion === 2){ //Escogio vecino de Arriba
+          celdaActual.bordes[TOP] = false;
           celdaVecina = laberinto[celdaActual.index-1];
+          celdaVecina.bordes[BOTTOM] = false;
+          limpiarRect(celdaActual.x,celdaActual.y);
+          dibujarCelda(celdaActual.x,celdaActual.y,celdaActual.bordes);
           limpiarRect(celdaVecina.x,celdaVecina.y);
-          dibujarSinBottom(celdaVecina.x,celdaVecina.y);
+          //dibujarSinBottom(celdaVecina.x,celdaVecina.y);
+
+          dibujarCelda(celdaVecina.x,celdaVecina.y,celdaVecina.bordes);
         }
         else if(opcion === 3){ //Escogio vecino Derecho
+          celdaActual.bordes[RIGHT] = false;
           celdaVecina = laberinto[celdaActual.index+parseInt(filas)];
+          celdaVecina.bordes[LEFT] = false;
+          limpiarRect(celdaActual.x,celdaActual.y);
+          dibujarCelda(celdaActual.x,celdaActual.y,celdaActual.bordes);
           limpiarRect(celdaVecina.x,celdaVecina.y);
-          dibujarSinLeft(celdaVecina.x,celdaVecina.y);
+          //dibujarSinLeft(celdaVecina.x,celdaVecina.y);
+          dibujarCelda(celdaVecina.x,celdaVecina.y,celdaVecina.bordes);
         }
         else if(opcion===4){ //Escogio vecino Izquierdo
+          celdaActual.bordes[LEFT] = false;
           celdaVecina = laberinto[celdaActual.index-parseInt(filas)];
+          celdaVecina.bordes[RIGHT] = false;
+          limpiarRect(celdaActual.x,celdaActual.y);
+          dibujarCelda(celdaActual.x,celdaActual.y,celdaActual.bordes);
           limpiarRect(celdaVecina.x,celdaVecina.y);
-          dibujarSinRight(celdaVecina.x,celdaVecina.y);
+        //  dibujarSinRight(celdaVecina.x,celdaVecina.y);
+          dibujarCelda(celdaVecina.x,celdaVecina.y,celdaVecina.bordes);
         }
 
         backtracking(celdaVecina,stack);
@@ -94,6 +119,7 @@ function drawBack(){
 
 function limpiarRect(x,y){
   ctx.clearRect(y*longCelda,x*longCelda,longCelda,longCelda);
+  ctx.save();
 }
 
 let celda = (y,x,indice) => {
@@ -136,4 +162,36 @@ function dibujarSinRight(x,y){
   ctx.lineTo((x+1)*longCelda,y*longCelda); //dibuja izquierda
   ctx.lineTo((x+1)*longCelda,(y+1)*longCelda); //dibuja abajo
   ctx.stroke();
+}
+function dibujarCelda(x,y,bordes){
+  if(bordes[TOP]){
+    ctx.beginPath();
+    ctx.moveTo(x*longCelda, y*longCelda);
+    ctx.lineTo((x+1)*longCelda, y*longCelda);
+    ctx.stroke();
+   // ctx.endPath();
+  }
+  if(bordes[RIGHT]){
+    ctx.beginPath();
+    ctx.moveTo((x+1)*longCelda, y*longCelda);
+    ctx.lineTo((x+1)*longCelda, (y+1)*longCelda);
+    ctx.stroke();
+
+  //  ctx.endPath();
+  }
+  if(bordes[BOTTOM]){
+    ctx.beginPath();
+    ctx.moveTo(x*longCelda, (y+1)*longCelda);
+    ctx.lineTo((x+1)*longCelda, (y+1)*longCelda);
+    ctx.stroke();
+    //ctx.endPath();
+  }
+  if(bordes[LEFT]){
+    ctx.beginPath();
+    ctx.moveTo(x*longCelda, y*longCelda);
+    ctx.lineTo(x*longCelda, y+1*longCelda);
+    ctx.stroke();
+    //ctx.endPath();
+  }
+  //ctx.endPath();
 }
