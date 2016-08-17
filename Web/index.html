@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="cssFiles/styles.css"/>
-    <script src="scripts/scripts.js"></script>
+    <link rel="stylesheet" href="css/styles.css"/>
+    <script src="js/scripts.js"></script>
+    <script src="js/mazetest.js"></script>
     <title>Laberinto Online</title>
   </head>
-  <body onload="alerta();">
-    <h1>Beta del Laberinto</h1>
+  <body>
+    <a>Filas:<input type="text" id="alto"/></a>
+    <a>Columnas:<input type="text" id="ancho"/></a>
+    <br>
+    <br>
+    <button onclick="prueba();">Generar Laberinto</button>
+    <br>
+    <br>
+    <canvas id="mycanvas" style="border:1px solid #000000;">
+
+    </canvas>
   <body>
 </html>
