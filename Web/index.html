@@ -3,30 +3,19 @@
   <head>
     <link rel="stylesheet" href="css/styles.css"/>
     <script src="js/scripts.js"></script>
+    <script src="js/mazetest.js"></script>
     <title>Laberinto Online</title>
   </head>
   <body>
-    <div id="wrapper">
-      <header>
-        <nav></nav>
-      <header>
-      <div id="content">
-        <h1>Beta del Laberinto</h1>
-          <table>
-            <tr>
-              <td>Largo:</td>
-              <td>Ancho:</td>
-            </tr>
-            <tr>
-              <td><input type="text"/></td>
-              <td><input type="text"/></td>
-            </tr>
-            <tr colspan="2">
-              <td><input type="button" value="Crear Laberinto" onclick="alerta();"></td>
-            </tr>
-          </table>
-      </div>
-      <footer></footer>
-    </div>
+    <a>Filas:<input type="text" id="alto"/></a>
+    <a>Columnas:<input type="text" id="ancho"/></a>
+    <br>
+    <br>
+    <button onclick="prueba();">Generar Laberinto</button>
+    <br>
+    <br>
+    <canvas id="mycanvas" style="border:1px solid #000000;">
+
+    </canvas>
   <body>
 </html>
