@@ -1,139 +1,125 @@
-let laberinto = [];
-//let hijos = [1,2,3,4]; //1-> Arriba, 2->Abajo, 3->Derecha, 4->Izquierda
-let longCelda;
-let canvas;
-let columnas;
-let filas;
-let ctx;
+let cols,rows;
+let w = 20;
+let grid = [];
+let current;
+let stack = [];
 
-function prueba(){
-  longCelda = 25;
-  canvas = document.getElementById("mycanvas");
-  columnas = document.getElementById('ancho').value;
-  filas = document.getElementById('alto').value;
-  canvas.width = columnas * longCelda;
-  canvas.height = filas * longCelda;
-  ctx = canvas.getContext('2d');
-  ctx.fillStyle = "#FFFFFF";
-  ctx.beginPath();
-  for(let x = 0; x < columnas; x++)
-    for(let y = 0; y < filas; y++){
-      //ctx.fillRect(x*longCelda,y*longCelda,longCelda,longCelda); //rellena el cuadro...
-      ctx.moveTo(x*longCelda,y*longCelda);//Empieza a dibujar
-      ctx.lineTo(x*longCelda,(y+1)*longCelda); //dibuja izquierda
-      ctx.lineTo((x+1)*longCelda,(y+1)*longCelda); //dibuja abajo
-      ctx.lineTo((x+1)*longCelda,y*longCelda); //dibuja derecha
-      ctx.lineTo(x*longCelda,y*longCelda) //dibuja arriba
-      ctx.stroke();
-      celda(x,y,laberinto.length); //verificar despues si es length-1
-    }
-    drawBack();
+function setup(){
+  createCanvas(400,400);
+  cols = Math.floor(width/w);
+  rows = Math.floor(height/w);
+  for (let j = 0; j < rows; j++)
+    for(let i = 0; i < cols; i++)
+      grid.push(new Cell(i,j));
+
+  current = grid[0];
 }
 
-function drawBack(){
-  //hacer validacion
-  let stack = []; //pila o cola
-  let contadorV = 0;
-  laberinto[0].visitado = true;
-  let backtracking = (celdaActual,stack) => {
-    celdaActual.visitado = true;
-    contadorV++;
-    if(contadorV<laberinto.length){ //Primer if del algoritmo de backtracking
-      let i = celdaActual.index; //en este if verificamos si hay hijos sin visitar
-      if((laberinto[i+1] && !laberinto[i+1].visitado && celdaActual.x+1 < parseInt(filas)) ||
-      (laberinto[i-1] && !laberinto[i-1].visitado && celdaActual.x-1 > 0) ||
-      (laberinto[i+parseInt(filas)] && !laberinto[i+parseInt(filas)].visitado && celdaActual.y+1 < parseInt(columnas)) ||
-      (laberinto[i-parseInt(filas)] && !laberinto[i-parseInt(filas)].visitado && celdaActual.y-1 > 0)){
-        let opciones = [];
-        if(laberinto[i+1] && !laberinto[i+1].visitado && celdaActual.x+1 < parseInt(filas))
-          opciones.push(1); //lado abajo
-        if(laberinto[i-1] && !laberinto[i-1].visitado && celdaActual.x-1 >= 0)
-          opciones.push(2); //lado arriba
-        if(laberinto[i+parseInt(filas)] && !laberinto[i+parseInt(filas)].visitado && celdaActual.y+1 < parseInt(columnas))
-          opciones.push(3); //lado derecha
-        if(laberinto[i-parseInt(filas)] && !laberinto[i-parseInt(filas)].visitado && celdaActual.y-1 >= 0)
-          opciones.push(4); //lado izquierdo
-        //sacar el vecino al que se le va a hacer la mica
-        let opcion = getRandom(opciones);
-        //pusheamos la celdaActual a la pila
-        stack.push(celdaActual);
-        //remover pared entre ambas
-        //revisar cual opcion fue
-        let celdaVecina;
-        if(opcion === 1){ //Escogio el vecino de Abajo
-          celdaVecina = laberinto[celdaActual.index+1];
-          limpiarRect(celdaVecina.x,celdaVecina.y);
-          dibujarSinTop(celdaVecina.x,celdaVecina.y);
-        }
-        else if(opcion === 2){ //Escogio vecino de Arriba
-          celdaVecina = laberinto[celdaActual.index-1];
-          limpiarRect(celdaVecina.x,celdaVecina.y);
-          dibujarSinBottom(celdaVecina.x,celdaVecina.y);
-        }
-        else if(opcion === 3){ //Escogio vecino Derecho
-          celdaVecina = laberinto[celdaActual.index+parseInt(filas)];
-          limpiarRect(celdaVecina.x,celdaVecina.y);
-          dibujarSinLeft(celdaVecina.x,celdaVecina.y);
-        }
-        else if(opcion===4){ //Escogio vecino Izquierdo
-          celdaVecina = laberinto[celdaActual.index-parseInt(filas)];
-          limpiarRect(celdaVecina.x,celdaVecina.y);
-          dibujarSinRight(celdaVecina.x,celdaVecina.y);
-        }
-
-        backtracking(celdaVecina,stack);
-      }
-      else if(stack.length>0){ //El primer else del algoritmo de backtracking
-        backtracking(stack.pop(),stack)
-      }
-    }
+function draw() {
+  background(51);
+  for(let i = 0; i < grid.length; i++)
+    grid[i].show();
+  current.visited = true;
+  current.highlight();
+  //Step 1
+  let next = current.checkNeighbors();
+  if(next){
+    next.visited = true;
+    //Step 2
+    stack.push(current);
+    //Step 3
+    removeWalls(current,next);
+    //Step 4
+    current = next;
   }
-  backtracking(laberinto[0],[]);
-  //(getRandom([1,3])==1)? backtracking(laberinto[0],[]) : backtracking(laberinto[parseInt(filas)],[])
+  else if(stack.length>0){
+    current = stack.pop();
+  }
 }
 
-function limpiarRect(x,y){
-  ctx.clearRect(y*longCelda,x*longCelda,longCelda,longCelda);
+function index(i,j){
+  if(i < 0 || j < 0 || i > cols-1 || j > rows-1)
+    return -1;
+  return i + j * cols;
 }
 
-let celda = (y,x,indice) => {
-  coordenadas = { 'x': x, 'y':y,'visitado': false,'index':indice ,'bordes':[true,true,true,true]}
-  laberinto.push(coordenadas);
+function Cell(i,j){
+  this.i = i;
+  this.j = j;
+  this.walls = [true,true,true,true]; //0->TOP,1->Rigth, 2->Bottom, 3->Left
+  this.visited = false;
+
+  this.checkNeighbors = function(){
+    let neighbors = [];
+
+    let top = grid[index(i,j-1)];
+    let rigth = grid[index(i+1,j)];
+    let bottom = grid[index(i,j+1)];
+    let left = grid[index(i-1,j)];
+
+    if(top && !top.visited)
+      neighbors.push(top);
+    if(rigth && !rigth.visited)
+      neighbors.push(rigth);
+    if(bottom && !bottom.visited)
+      neighbors.push(bottom);
+    if(left && !left.visited)
+      neighbors.push(left);
+
+    if(neighbors.length > 0){
+      let r = Math.floor(random(0,neighbors.length));
+      return neighbors[r];
+    }
+    else
+      return undefined;
+  }
+  this.highlight = function(){
+      let x = this.i*w;
+      let y = this.j*w;
+      noStroke();
+      fill(0,0,0,0);
+      rect(x,y,w,w);
+  }
+
+  this.show = function(){
+    let x = this.i*w;
+    let y = this.j*w;
+    stroke(255);
+    if(this.walls[0]) //Top
+      line(x,y,x+w,y);
+    if(this.walls[1]) //Rigth
+      line(x+w,y,x+w,y+w);
+    if(this.walls[2]) //Bottom
+      line(x+w,y+w,x,y+w);
+    if(this.walls[3]) //Left
+      line(x,y+w,x,y);
+    if(this.visited){
+      noStroke();
+      fill(255,255,0,100);
+      rect(x,y,w,w);
+    }
+
+  }
 }
 
 
-
-let getRandom = (array) => array[Math.floor(Math.random()* array.length)]
-
-function dibujarSinTop(x,y){
-  ctx.beginPath();
-  ctx.moveTo(x*longCelda,y*longCelda);//Empieza a dibujar
-  ctx.lineTo((x+1)*longCelda,y*longCelda); //dibuja izquierda
-  ctx.lineTo((x+1)*longCelda,(y+1)*longCelda); //dibuja abajo
-  ctx.lineTo(x*longCelda,(y+1)*longCelda); //dibuja derecha
-  ctx.stroke();
-}
-function dibujarSinBottom(x,y){
-  ctx.beginPath();
-  ctx.moveTo((x+1)*longCelda,y*longCelda);//Empieza a dibujar
-  ctx.lineTo(x*longCelda,y*longCelda); //dibuja izquierda
-  ctx.lineTo(x*longCelda,(y+1)*longCelda) //dibuja arriba
-  ctx.lineTo((x+1)*longCelda,(y+1)*longCelda); //dibuja derecha
-  ctx.stroke();
-}
-function dibujarSinLeft(x,y){
-  ctx.beginPath();
-  ctx.moveTo(x*longCelda,y*longCelda);//Empieza a dibujar
-  ctx.lineTo(x*longCelda,(y+1)*longCelda) //dibuja arriba
-  ctx.lineTo((x+1)*longCelda,(y+1)*longCelda); //dibuja derecha
-  ctx.lineTo((x+1)*longCelda,y*longCelda); //dibuja abajo
-  ctx.stroke();
-}
-function dibujarSinRight(x,y){
-  ctx.beginPath();
-  ctx.moveTo(x*longCelda,(y+1)*longCelda);//Empieza a dibujar
-  ctx.lineTo(x*longCelda,y*longCelda) //dibuja arriba
-  ctx.lineTo((x+1)*longCelda,y*longCelda); //dibuja izquierda
-  ctx.lineTo((x+1)*longCelda,(y+1)*longCelda); //dibuja abajo
-  ctx.stroke();
+function removeWalls(current,next){
+  let x = current.i - next.i;
+  if(x === 1){ //Si el vecino esta a la izquierda
+    current.walls[3] = false; //borrar izquierda
+    next.walls[1] = false;   //borrar derecha
+  }
+  else if(x === -1){
+    next.walls[3] = false; //borrar la izquierda
+    current.walls[1] = false; //borra la derecha
+  }
+  let y = current.j - next.j;
+  if(y === 1){ //Si el vecino esta a abajo
+    current.walls[0] = false; //borrar bottom
+    next.walls[2] = false;   //borrar top
+  }
+  else if(y === -1){ //Si el vecino esta arriba
+    next.walls[0] = false; //borrar bottom
+    current.walls[2] = false; //borra top
+  }
 }
