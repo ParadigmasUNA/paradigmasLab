@@ -35,6 +35,7 @@ function draw() {
   else if(stack.length>0){
     current = stack.pop();
   }
+  drawImageOnCanvas();
 }
 
 function index(i,j){
@@ -122,4 +123,11 @@ function removeWalls(current,next){
     next.walls[0] = false; //borrar bottom
     current.walls[2] = false; //borra top
   }
+}
+
+drawImageOnCanvas = () => {
+  x = grid[0].i + w/2;
+  y = grid[0].j + w/2;
+  stroke(255);
+  ellipse(x,y,5,5);
 }
