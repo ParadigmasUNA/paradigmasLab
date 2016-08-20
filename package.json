@@ -1,16 +1,23 @@
 {
   "name": "laberinto",
   "version": "0.0.1",
-  "description": "Mostrar y Solucionar Laberintos con progamación Funcional",
-  "main": "server.js",
-  "dependencies": {
-    "express": "^4.14.0"
-  },
-  "devDependencies": {},
+  "description": "Mostrar y Solucionar laberintos",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node ./bin/www"
   },
+  "dependencies": {
+    "body-parser": "~1.15.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "ejs": "^2.5.1",
+    "express": "~4.14.0",
+    "jade": "~1.11.0",
+    "morgan": "~1.7.0",
+    "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/artaviapcarlos/paradigmasLab.git"
