@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>Maze Generator</title>
     <link rel="stylesheet" href="stylesheets/styles.css"/>
-    <script src="javascripts/mazetest.js"></script>
-    <script src="javascripts/libp5/p5.js"></script>
-    <title>Laberinto Online</title>
-  </head>
+    <script src="javascripts/scripts.js"></script>
+  <head>
   <body>
+    <label>Numero de Columnas</label>
+    <input type="text" id="txtcolumnas"/>
+    <label>Numero de filas</label>
+    <input type="text" id="txtfilas" />
+    <button onclick="createCanvasGrid();">Generar Maze</button>
+    <br>
+    <br>
+    <canvas id="canvas" width="600" height="600">
 
+    </canvas>
   <body>
 </html>
