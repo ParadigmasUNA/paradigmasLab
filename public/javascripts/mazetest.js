@@ -131,3 +131,24 @@ drawImageOnCanvas = () => {
   stroke(255);
   ellipse(x,y,5,5);
 }
+
+processKey = () =>{
+  // If an arrow key was pressed, and adjust the speed accordingly.
+  // (Ignore any other key.)
+
+  // The up arrow was pressed, so move up.
+  if (e.keyCode == 38) {
+  }
+
+  // The down arrow was pressed, so move down.
+  if (e.keyCode == 40) {
+  }
+
+  // The left arrow was pressed, so move left.
+  if (e.keyCode == 37) {
+  }
+
+  // The right arrow was pressed, so move right.
+  if (e.keyCode == 39) {
+  }
+}
