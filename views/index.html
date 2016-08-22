@@ -4,17 +4,19 @@
     <title>Maze Generator</title>
     <link rel="stylesheet" href="stylesheets/styles.css"/>
     <script src="javascripts/scripts.js"></script>
+    <script src="/jquery/jquery.js"></script>
   <head>
   <body>
-    <label>Numero de Columnas</label>
-    <input type="text" id="txtcolumnas"/>
-    <label>Numero de filas</label>
-    <input type="text" id="txtfilas" />
+    <label>Dificultad</label>
+    <select id="dificultad"/>
+      <option value="7">Fácil</option>
+      <option value="16">Medio</option>
+      <option value="22">Difícil</option>
+    </select>
     <button onclick="createCanvasGrid();">Generar Maze</button>
     <br>
     <br>
-    <canvas id="canvas" width="600" height="600">
-
+    <canvas id="canvas">
     </canvas>
   <body>
 </html>

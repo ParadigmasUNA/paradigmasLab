@@ -8,8 +8,6 @@ let line = (ctx,x1,y1,x2,y2) =>{  //Dibuja una linea desde un punto dado hasta o
 
 //Devuelve el contexto del canvas
 let getCanvasContext = canvasId => document.getElementById(canvasId).getContext('2d');
-//Devuelve el valor del campo ya parseado a integer
-let getValueElement = id => parseInt(document.getElementById(id).value);
 //Setea las dimensiones del canvas
 let setCanvasSize = (columnas,filas,canvasId,anchoCelda) => {
     document.getElementById(canvasId).width = columnas * anchoCelda;
@@ -21,13 +19,11 @@ let index = (i,j,columnas,filas) => (i < 0 || j < 0 || i > columnas-1 || j > fil
 
 let createCanvasGrid = () => {
   let ctx = getCanvasContext('canvas');
-  let anchoCelda = 40; //Es el ancho de cada celda
-  let columnas = getValueElement('txtcolumnas'); //Valor entero del numero de columnas
-  let filas = getValueElement('txtfilas'); //Valor entero del numero de filas
-  setCanvasSize(columnas,filas,'canvas',anchoCelda); //Setea dimnesiones del canvas
+  let anchoCelda = 30; //Es el ancho de cada celda
+  setCanvasSize(parseInt($("#dificultad")[0].value),parseInt($("#dificultad")[0].value),'canvas',anchoCelda); //Setea dimnesiones del canvas
 
-  for (let j = 0; j < columnas; j++)  //Esto crea el grid del canvas... si se quisiera...
-    for(let i = 0; i < filas; i++){
+  for (let j = 0; j < parseInt($("#dificultad")[0].value); j++)  //Esto crea el grid del canvas... si se quisiera...
+    for(let i = 0; i < parseInt($("#dificultad")[0].value); i++){
       line(ctx,j*anchoCelda,i*anchoCelda,j*anchoCelda,(i+1)*anchoCelda); //dibuja Izquierda
       line(ctx,j*anchoCelda,(i+1)*anchoCelda,(j+1)*anchoCelda,(i+1)*anchoCelda); //dibuja abajo
       line(ctx,(j+1)*anchoCelda,(i+1)*anchoCelda,(j+1)*anchoCelda,i*anchoCelda); //dibuja derecha
@@ -42,7 +38,7 @@ let drawMaze = (ctx,grid) =>{
   current.visited = true;
   let stack = [];
   let backtracking = (actual,stack) =>{
-    actual.mostrar(40);
+    actual.mostrar(30);
     let next = actual.checkNeighbors();
     if(next){
       next.visited = true;
@@ -66,12 +62,10 @@ function Cell(i,j){
 
   this.checkNeighbors = () => {
     let neighbors = [];
-    let columnas = getValueElement('txtcolumnas');
-    let filas = getValueElement('txtfilas');
-    let top = grid[index(i,j-1,columnas,filas)];
-    let rigth = grid[index(i+1,j,columnas,filas)];
-    let bottom = grid[index(i,j+1,columnas,filas)];
-    let left = grid[index(i-1,j,columnas,filas)];
+    let top = grid[index(i,j-1,parseInt($("#dificultad")[0].value),parseInt($("#dificultad")[0].value))];
+    let rigth = grid[index(i+1,j,parseInt($("#dificultad")[0].value),parseInt($("#dificultad")[0].value))];
+    let bottom = grid[index(i,j+1,parseInt($("#dificultad")[0].value),parseInt($("#dificultad")[0].value))];
+    let left = grid[index(i-1,j,parseInt($("#dificultad")[0].value),parseInt($("#dificultad")[0].value))];
 
     if(top && !top.visited)
       neighbors.push(top);
