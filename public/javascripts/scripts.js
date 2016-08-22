@@ -1,4 +1,4 @@
-let grid = []; //Vector para meter a todas las celdas en un array...
+let grid; //Vector para meter a todas las celdas en un array...
 let line = (ctx,x1,y1,x2,y2) =>{  //Dibuja una linea desde un punto dado hasta otro
   ctx.beginPath();
   ctx.moveTo(x1,y1);
@@ -18,10 +18,11 @@ let setCanvasSize = (columnas,filas,canvasId,anchoCelda) => {
 let index = (i,j,columnas,filas) => (i < 0 || j < 0 || i > columnas-1 || j > filas-1) ? -1 : i + j * columnas;
 
 let createCanvasGrid = () => {
+  //document.getElementById('canvas').width = document.getElementById('canvas');
   let ctx = getCanvasContext('canvas');
+  grid = [];
   let anchoCelda = 30; //Es el ancho de cada celda
   setCanvasSize(parseInt($("#dificultad")[0].value),parseInt($("#dificultad")[0].value),'canvas',anchoCelda); //Setea dimnesiones del canvas
-
   for (let j = 0; j < parseInt($("#dificultad")[0].value); j++)  //Esto crea el grid del canvas... si se quisiera...
     for(let i = 0; i < parseInt($("#dificultad")[0].value); i++){
       line(ctx,j*anchoCelda,i*anchoCelda,j*anchoCelda,(i+1)*anchoCelda); //dibuja Izquierda
