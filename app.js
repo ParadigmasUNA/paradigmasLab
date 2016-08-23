@@ -1,13 +1,16 @@
+// modules
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-//var $ = require('jquery');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+
+// config files
+var db = require('./config/db');
 
 var app = express();
 
