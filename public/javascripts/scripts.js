@@ -1,96 +1,12 @@
-let grid; //Vector para meter a todas las celdas en un array...
-let line = (ctx,x1,y1,x2,y2) =>{  //Dibuja una linea desde un punto dado hasta otro
-  ctx.beginPath();
-  ctx.moveTo(x1,y1);
-  ctx.lineTo(x2,y2);
-  ctx.stroke();
-}
-
-//Devuelve el contexto del canvas
-let getCanvasContext = canvasId => document.getElementById(canvasId).getContext('2d');
-//Setea las dimensiones del canvas
-let setCanvasSize = (tamano,canvasId,anchoCelda) => {
-    document.getElementById(canvasId).width = tamano * anchoCelda;
-    document.getElementById(canvasId).height = tamano * anchoCelda;
-}
-
-//Me dice si el indice esta fuera de los valores de la matriz
-
-let createCanvasGrid = () => {
-  let ctx = getCanvasContext('canvas');
-  grid = [];
+let init = () => {
+  //let ctx = getCanvasContext('canvas');
   let anchoCelda = 30; //Es el ancho de cada celda
   setCanvasSize(parseInt($("#dificultad")[0].value),'canvas',anchoCelda); //Setea dimnesiones del canvas
-  for (let j = 0; j < parseInt($("#dificultad")[0].value); j++)  //Esto crea el grid del canvas... si se quisiera...
-    for(let i = 0; i < parseInt($("#dificultad")[0].value); i++){
-    /*line(ctx,j*anchoCelda,i*anchoCelda,j*anchoCelda,(i+1)*anchoCelda); //dibuja Izquierda
-      line(ctx,j*anchoCelda,(i+1)*anchoCelda,(j+1)*anchoCelda,(i+1)*anchoCelda); //dibuja abajo
-      line(ctx,(j+1)*anchoCelda,(i+1)*anchoCelda,(j+1)*anchoCelda,i*anchoCelda); //dibuja derecha
-      line(ctx,(j+1)*anchoCelda,i*anchoCelda,j*anchoCelda,i*anchoCelda); //dibuja arriba*/
-      grid.push(new Cell(i,j)); //Crear los objetos celda e ingresarlos al vector grid
-    }
-    drawMaze(ctx,grid);
-    grid.forEach((e)=> mostrar(e,anchoCelda));
-}
 
-let drawMaze = (ctx,grid) =>{
-  let current = grid[0];
-  current.visited = true;
-  //let stack = [];
-  let backtracking = (actual,stack) =>{
-    //actual.mostrar(30);
-    let next = actual.checkNeighbors(grid,[],parseInt($("#dificultad")[0].value));
-    if(next){
-      next.visited = true;
-      stack.push(actual);
-      quitarParedes(actual,next);
-      backtracking(next,stack);
-    }
-    else if(stack.length > 0){
-      backtracking(stack.pop(),stack);
-    }
-  }
-  backtracking(current,[]);
-}
+  let worker = new Worker('javascripts/mazeGen.js');
+  worker.onmessage = event => JSON.parse(event.data).forEach((e)=> mostrar(e,anchoCelda));;
+  worker.onerror = (e) => console.log(e);
+  tam = $("#dificultad")[0].value;
+  worker.postMessage({tamano: tam});
 
-
-let mostrar = (cell,ancho) =>{
-  let x = cell.i * ancho;
-  let y = cell.j * ancho;
-  let ctx = getCanvasContext('canvas');
-  //ctx.stroke(255);
-  if(cell.paredes[0]) //Top
-    line(ctx,x,y,x+ancho,y);
-  if(cell.paredes[1]) //Rigth
-    line(ctx,x+ancho,y,x+ancho,y+ancho);
-  if(cell.paredes[2]) //Bottom
-    line(ctx,x+ancho,y+ancho,x,y+ancho);
-  if(cell.paredes[3]) //Left
-    line(ctx,x,y+ancho,x,y);
-  if(cell.visited){
-    ctx.rect(x,y,ancho,ancho);
-    ctx.fillStyle = '#B8FF3E';
-    ctx.fill();
-  }
-}
-
-function quitarParedes(current,next){
-  let x = current.i - next.i;
-  if(x === 1){ //Si el vecino esta a la izquierda
-    current.paredes[3] = false; //borrar izquierda
-    next.paredes[1] = false;   //borrar derecha
-  }
-  else if(x === -1){
-    next.paredes[3] = false; //borrar la izquierda
-    current.paredes[1] = false; //borra la derecha
-  }
-  let y = current.j - next.j;
-  if(y === 1){ //Si el vecino esta a abajo
-    current.paredes[0] = false; //borrar bottom
-    next.paredes[2] = false;   //borrar top
-  }
-  else if(y === -1){ //Si el vecino esta arriba
-    next.paredes[0] = false; //borrar bottom
-    current.paredes[2] = false; //borra top
-  }
 }
