@@ -9,7 +9,7 @@
     <script src="javascripts/mazeGen.js"></script>
     <script src="/jquery/jquery.js"></script>
   <head>
-  <body>
+  <body onload="prueba();">
     <label>Dificultad</label>
     <select id="dificultad"/>
       <option value="7">Fácil</option>
@@ -17,7 +17,7 @@
       <option value="22">Difícil</option>
       <option value="30">Boss</option>
     </select>
-    <button onclick="init();">Generar Maze</button>
+    <button id="mazeG">Generar Maze</button>
     <br>
     <br>
     <canvas id="canvas">
