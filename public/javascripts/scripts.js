@@ -1,13 +1,15 @@
 const WIDTH = 30;
 let maze = [];
-let mazeSol = [];
+let mazeSol=[];
 let init = () => setCanvasSize(parseInt($("#dificultad")[0].value),'canvas',WIDTH); //Setea dimnesiones del canvas
 
 let toPromise = e => Promise.resolve(e);
 
 let prueba = () => {
     $('#mazeG').click(e => toPromise(e).then(init)
+                                       .then(() => maze = [])
                                        .then(mazeWorker('javascripts/mazeGen.js'))
+                                       .then( () => mazeSol = [])
                                        .catch(e => console.log(e)));
 
     $('#mazeSolve').click(e => toPromise(e).then(solveWorker('javascripts/solveGen.js'))
