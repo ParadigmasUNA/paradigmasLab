@@ -5,15 +5,28 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongodb = require('mongodb');
+var ObjectID = mongodb.ObjectID;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-// config files
-var db = require('./config/db');
-
 var app = express();
 
+
+// db
+var db;
+
+mongodb.MongoClient.connect("mongodb://localhost:27017/maze",function (err, database) {
+  if (err) {
+    console.log(err);
+    process.exit(1);
+  }
+
+  // Save database object from the callback for reuse.
+  db = database;
+  console.log("Database connection ready");
+});
 //jquery
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 
