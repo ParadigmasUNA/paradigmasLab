@@ -1,11 +1,8 @@
 onmessage = function(event){
   let tamano = parseInt(event.data.tamano);
-  console.log(tamano);
   let grid = [];
   pushCell(tamano,grid);
-  console.log(grid);
   drawMaze(grid,tamano);
-  console.log(grid);
   postMessage(JSON.stringify(grid));
 }
 
