@@ -16,8 +16,9 @@ var users = require('./routes/users');
 var app = express();
 
 
-// db
+// db calls
 var db;
+var USERS_COLLECTION = "users";
 
 mongodb.MongoClient.connect("mongodb://localhost:27017/maze",function (err, database) {
   if (err) {
@@ -29,6 +30,86 @@ mongodb.MongoClient.connect("mongodb://localhost:27017/maze",function (err, data
   db = database;
   console.log("Database connection ready");
 });
+
+//USERS API ROUTES BELOW
+
+//error handler
+handleError = (res, reason, message, code) => {
+  console.log("ERROR: " + reason);
+  res.status(code || 500).json({"error": message});
+}
+
+/*  "/contacts"
+ *    GET: finds all contacts
+ *    POST: creates a new contact
+ */
+
+app.get("/users", (req, res) => {
+  db.collection(USERS_COLLECTION).find({}).toArray(function(err, docs) {
+    if (err) {
+      handleError(res, err.message, "Failed to get users.");
+    } else {
+      res.status(200).json(docs);
+    }
+  });
+});
+
+app.post("/users", function(req, res) {
+  var newUser = req.body;
+  newUser.createDate = new Date();
+
+  if (!(req.body.name || req.body.password)) {
+    handleError(res, "Invalid user input", "Must provide a name and password.", 400);
+  }
+
+  db.collection(USERS_COLLECTION).insertOne(newUser, (err, doc) => {
+    if (err) {
+      handleError(res, err.message, "Failed to create new user.");
+    } else {
+      res.status(201).json(doc.ops[0]);
+    }
+  });
+});
+
+/*  "/contacts/:id"
+ *    GET: find user by id
+ *    PUT: update user by id
+ *    DELETE: deletes user by id
+ */
+
+ app.get("/users/:id", function(req, res) {
+  db.collection(USERS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, (err, doc) => {
+    if (err) {
+      handleError(res, err.message, "Failed to get user");
+    } else {
+      res.status(200).json(doc);
+    }
+  });
+});
+
+app.put("/users/:id", function(req, res) {
+  var updateDoc = req.body;
+  delete updateDoc._id;
+
+  db.collection(USERS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, function(err, doc) {
+    if (err) {
+      handleError(res, err.message, "Failed to update user");
+    } else {
+      res.status(204).end();
+    }
+  });
+});
+
+app.delete("/users/:id", function(req, res) {
+  db.collection(USERS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
+    if (err) {
+      handleError(res, err.message, "Failed to delete user");
+    } else {
+      res.status(204).end();
+    }
+  });
+});
+
 //jquery
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 
