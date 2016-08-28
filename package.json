@@ -1,0 +1,26 @@
+{
+  "name": "laberinto",
+  "version": "0.2.1",
+  "description": "maze MEAN and FP",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./server.js"
+  },
+  "author": "Omar Segura, Andrey Campos, Fabián Hernadez, Carlos Artavia",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "jquery": "^3.1.0",
+    "method-override": "^2.3.6",
+    "mongodb": "^2.2.8",
+    "mongoose": "^4.5.10",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artaviapcarlos/paradigmasLab.git"
+  }
+}
