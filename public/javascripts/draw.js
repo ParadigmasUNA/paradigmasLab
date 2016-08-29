@@ -56,39 +56,36 @@ function doGameLoop() {
 function whatKey(evt, grid) {
   grid.forEach(x => mostrar(x,30)); //reconstruye el maze
   muros = SaberMuros(shipX,shipY,grid);
-  console.log(Sabercell(oldShipX,oldShipY,grid));
   mostrar(Sabercell(oldShipX,oldShipY,grid),30);
   let a= oldShipX;
   oldShipX = shipX;
   oldShipY = shipY;
+  let cell = Sabercell(oldShipX,oldShipY,grid);
+  cell.path = 1;
   HaceRastro(getCanvasContext('canvas'));
   switch (evt.keyCode) {
 
     case 37: //izquierda
       shipX = shipX - 30;
       shipX < 0 ? shipX = 0 &&  devolver(oldShipX,oldShipY,grid): false;
-      console.log("izq con x: "+shipX+" y: "+shipY+" indice: "+indice(shipX/30,shipY/30,30));
       muros[3] ? devolver(oldShipX,oldShipY,grid) :false;
     break;
 
     case 39: //derecha
       shipX = shipX + 30;
       (shipX >= (parseInt($("#dificultad")[0].value)*30)) ?  devolver(oldShipX,oldShipY,grid): false;
-      console.log("dere con x: "+shipX+" y: "+shipY+" indice: "+indice(shipX/30,shipY/30,30));
       muros[1] ? devolver(oldShipX,oldShipY,grid) :false;
     break;
 
     case 40: //abajo
       shipY = shipY + 30;
       (shipY >= (parseInt($("#dificultad")[0].value)*30)) ? devolver(oldShipX,oldShipY,grid): false;
-      console.log("abajo con x: "+shipX+" y: "+shipY+" indice: "+indice(shipX/30,shipY/30,30));
       muros[2] ? devolver(oldShipX,oldShipY,grid) :false;
     break;
 
     case 38: //arriba
       shipY = shipY - 30;
       shipY < 0 ? shipY = 0 &&  devolver(oldShipX,oldShipY,grid): false;
-      console.log("arriba con x: "+shipX+" y: "+shipY+" indice: "+indice(shipX/30,shipY/30,30) );
       muros[0] ? devolver(oldShipX,oldShipY,grid) :false;
     break;
   }
