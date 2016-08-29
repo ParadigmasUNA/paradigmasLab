@@ -35,6 +35,7 @@ if(!themaze.remote){
                                         .then(e => e.init(parseInt($("#dificultad")[0].value)))
                                         .then(e => themaze.maze = e)
                                         .then(_=> themaze.maze.forEach(celda => mostrar(celda,themaze.anchoCelda)))
+                                        .then( _=> jugar(themaze.maze))
                                         .catch(e => console.log(e)));
     $('#mazeSolve').click(e => toPromise(e).then(_ => initCanvas(parseInt($("#dificultad")[0].value),themaze.anchoCelda))
                                            .then(_ => new mazec.SolveGen())
@@ -55,4 +56,10 @@ let f = ()=>{
   "Content-Type": "application/json"
   });
   return myHeaders;
+}
+
+let jugar = (maze) => {
+  makeShip();
+  setInterval(doGameLoop, 16); // jugar hasta acabar
+  window.addEventListener('keydown', e => whatKey(e,maze), true);
 }
