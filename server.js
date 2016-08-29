@@ -21,14 +21,14 @@ router.get('/', function (req, res){
 
 router.post('/', (req,res) => {
    if(req.body.opcion=='1'){
-     let caca = new mazeGen();
-     let c = caca.init(parseInt(req.body.tamano));
+     let maze = new mazeGen();
+     let c = maze.init(parseInt(req.body.tamano));
      res.setHeader('Content-Type', 'application/json');
      res.json(JSON.stringify(c));
    }
    else if(req.body.opcion =='2'){
-     let caca = new solveGen();
-     let c = caca.init(req.body.tamano, req.body.maze);
+     let solve = new solveGen();
+     let c = solve.init(parseInt(req.body.tamano), req.body.maze);
      res.setHeader('Content-Type','application/json');
      res.json(JSON.stringify(c));
    }

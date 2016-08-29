@@ -2,7 +2,7 @@ let initEvents = () => {
     let themaze = new TheMaze();
     themaze.anchoCelda = 30;
 
-if(!themaze.remote){
+if(themaze.remote){
     $('#mazeG').click( _ => fetch('http://localhost:3000/',{method: 'POST',headers:f(), body: JSON.stringify({opcion:'1', tamano: $("#dificultad")[0].value })})
                                  .then(response => response.json())
                                  .then(e => JSON.parse(e))
