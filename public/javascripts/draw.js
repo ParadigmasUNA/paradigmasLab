@@ -48,20 +48,21 @@ function makeShip() {
 function doGameLoop() {
   let ctx = getCanvasContext('canvas');
   ctx.putImageData(ship, shipX, shipY);
-  shipX == (parseInt($("#dificultad")[0].value)-1)*30 && shipY == (parseInt($("#dificultad")[0].value)-1)*30  ? alert("tomela Andrey grande y peluda") && clearInterval()
-  : false;
+  //shipX == (parseInt($("#dificultad")[0].value)-1)*30 && shipY == (parseInt($("#dificultad")[0].value)-1)*30  ? alert("tomela Andrey grande y peluda") && window.clearInterval(RRR)
+  //: false;
 }
 
 
 function whatKey(evt, grid) {
   grid.forEach(x => mostrar(x,30)); //reconstruye el maze
   muros = SaberMuros(shipX,shipY,grid);
-  console.log(Sabercell(oldShipX,oldShipY,grid));
   mostrar(Sabercell(oldShipX,oldShipY,grid),30);
   let a= oldShipX;
   oldShipX = shipX;
   oldShipY = shipY;
   HaceRastro(getCanvasContext('canvas'));
+  shipX == (parseInt($("#dificultad")[0].value)-1)*30 && shipY == (parseInt($("#dificultad")[0].value)-1)*30  ?   BootstrapDialog.alert("tomela Andrey grande y peluda") && window.clearInterval(RRR)
+  : false;
   switch (evt.keyCode) {
 
     case 37: //izquierda
@@ -91,6 +92,7 @@ function whatKey(evt, grid) {
       console.log("arriba con x: "+shipX+" y: "+shipY+" indice: "+indice(shipX/30,shipY/30,30) );
       muros[0] ? devolver(oldShipX,oldShipY,grid) :false;
     break;
+
   }
 }
 
