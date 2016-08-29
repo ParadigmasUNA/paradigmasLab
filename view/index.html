@@ -3,15 +3,15 @@
   <head>
     <title>Maze Generator</title>
     <link rel="stylesheet" href="stylesheets/styles.css"/>
-    <script src="javascripts/scripts.js"></script>
-    <script src="javascripts/cells.js"></script>
+    <script src="javascripts/controller.js"></script>
+    <script src="javascripts/model.js"></script>
     <script src="javascripts/draw.js"></script>
-    <script src="javascripts/mazeGen.js"></script>
-    <script src="javascripts/events.js"></script>
+    <script src="javascripts/mazec.js"></script>
     <script src="/jquery/jquery.js"></script>
   <head>
-  <body onload="prueba();">
+  <body onload="initEvents();">
     <label>Dificultad</label>
+    <button id="tipojuego">Tipo de Juego Remoto/Local</button>
     <select id="dificultad"/>
       <option value="7">Fácil</option>
       <option value="16">Medio</option>
@@ -24,5 +24,6 @@
     <button id='mongo'> Mongo </button>
     <canvas id="canvas">
     </canvas>
+    <button id="mazeSolve">Generar Solucion</button>
   <body>
 </html>

@@ -1,34 +1,26 @@
 {
   "name": "laberinto",
-  "version": "0.0.1",
-  "description": "Mostrar y Solucionar laberintos",
-  "private": true,
+  "version": "0.2.1",
+  "description": "maze MEAN and FP",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./bin/www"
+    "start": "node ./server.js"
   },
+  "author": "Omar Segura, Andrey Campos, Fabián Hernadez, Carlos Artavia",
+  "license": "ISC",
   "dependencies": {
-    "body-parser": "~1.15.1",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.2.0",
-    "ejs": "^2.5.1",
-    "express": "~4.14.0",
-    "jade": "~1.11.0",
-    "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.0",
-    "jquery": "~3.1.0",
-    "mongodb": "~2.2.7",
-    "mongoose": "~3.0.0"
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "jquery": "^3.1.0",
+    "method-override": "^2.3.6",
+    "mongodb": "^2.2.8",
+    "mongoose": "^4.5.10",
+    "path": "^0.12.7"
   },
   "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/artaviapcarlos/paradigmasLab.git"
-  },
-  "author": "Omar Segura, Fabián Hernández, Andrey Campos, Carlos Artavia",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/artaviapcarlos/paradigmasLab/issues"
-  },
-  "homepage": "https://github.com/artaviapcarlos/paradigmasLab#readme"
+  }
 }
