@@ -33,14 +33,22 @@ if(themaze.remote){
     $('#mazeG').click( e => toPromise(e).then(_ => initCanvas(parseInt($("#dificultad")[0].value),themaze.anchoCelda))
                                         .then(e => new mazec.MazeGen())
                                         .then(e => e.init(parseInt($("#dificultad")[0].value)))
-                                        .then(e => themaze.maze = e)
+                                        .then(e =>themaze.maze = e)
+                                        .then(_ => themaze.tamano = parseInt($("#dificultad")[0].value))
                                         .then(_=> themaze.maze.forEach(celda => mostrar(celda,themaze.anchoCelda)))
+                                        .then( _=> jugar(themaze.maze))
                                         .catch(e => console.log(e)));
     $('#mazeSolve').click(e => toPromise(e).then(_ => initCanvas(parseInt($("#dificultad")[0].value),themaze.anchoCelda))
                                            .then(_ => new mazec.SolveGen())
                                            .then(e => e.init(parseInt($("#dificultad")[0].value),themaze.maze))
                                            .then(e => e.forEach(celda => mostrar(celda,themaze.anchoCelda)))
                                            .catch(e => console.log(e)));
+    $('#saveLocal').click(e => toPromise(e).then(_=> saveLocal(themaze)));
+    $('#recovery').click(e => toPromise(e).then(e => retrieveLocal())
+                                          .then(e => themaze = e)
+                                          .then(_ => initCanvas(themaze.tamano,themaze.anchoCelda))
+                                          .then(_=> themaze.maze.forEach(celda => mostrar(celda,themaze.anchoCelda)))
+                                          .then( _=> jugar(themaze.maze)));
   }
 }
 
@@ -55,4 +63,20 @@ let f = ()=>{
   "Content-Type": "application/json"
   });
   return myHeaders;
+}
+
+let jugar = (maze) => {
+  let cursor_ =new Cursor();
+  makeShip(getCanvasContext('canvas'),cursor_);
+  var RRR = window.setInterval(doGameLoop, 16,getCanvasContext("canvas"),cursor_); // jugar hasta acabar
+  window.addEventListener('keydown', e => whatKey(e,maze,cursor_), true);
+}
+
+let saveLocal = (themaze) => {
+    localStorage.setItem('themaze',JSON.stringify(themaze));
+}
+let retrieveLocal = () => {
+  let themaze = localStorage.getItem('themaze');
+  themaze = JSON.parse(themaze);
+  return themaze;
 }
