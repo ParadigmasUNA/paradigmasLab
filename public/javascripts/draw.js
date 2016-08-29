@@ -58,8 +58,6 @@ let doGameLoop = (ctx,Cursor) => {
 function whatKey(evt, grid,Cursor) {
   grid.forEach(x => mostrar(x,30)); //reconstruye el maze
   muros = SaberMuros(grid,Cursor);
-  grid[indice(Cursor)].paredes;
-  //mostrar(Sabercell(oldShipX,oldShipY,grid),30);
   Sabercell(grid,Cursor).path = 1;
   Cursor.AnteriorX = Cursor.ActualX;
   Cursor.AnteriorY = Cursor.ActualY;
@@ -91,7 +89,6 @@ function whatKey(evt, grid,Cursor) {
       Cursor.ActualY < 0 ? Cursor.ActualY= 0 &&  devolver(grid,Cursor): false;
       muros[0] ? devolver(grid,Cursor) :false;
     break;
-
   }
 }
 
