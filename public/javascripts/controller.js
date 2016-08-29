@@ -60,6 +60,6 @@ let f = ()=>{
 
 let jugar = (maze) => {
   makeShip();
-  setInterval(doGameLoop, 16); // jugar hasta acabar
+  var inter = setInterval(doGameLoop, 16); // jugar hasta acabar
   window.addEventListener('keydown', e => whatKey(e,maze), true);
 }

@@ -16,9 +16,6 @@ let setCanvasSize = (tamano,canvasId,anchoCelda) => {
 
 
 /********* JUGAR ************/
-
-
-
 var ship = new Image(); // ship
 var shipX = 0; // current ship position X
 var shipY = 0; // current ship position Y
@@ -29,97 +26,84 @@ var fondo = new Image();
 var rastro = new Image();
 
 function HaceRastro(contexto){
-  contexto.putImageData(fondo,oldShipX, oldShipY);
   contexto.fillStyle ="red";
   contexto.beginPath();
-  contexto.arc(5,5,4,0,Math.PI*2,true);
-  contexto.closePath();
+  contexto.rect(shipX,shipY,30,30);
+  contexto.fillStyle = '#B8FF3E';
   contexto.fill();
-  rastro=contexto.getImageData(0, 0, 30, 30); //guardo la pelota de rastro.
-  contexto.putImageData(rastro,oldShipX, oldShipY);
+  contexto.closePath();
 }
 
 function makeShip() {
   let ctx = getCanvasContext('canvas');
-  fondo = ctx.getImageData(5, 5,23, 23);
-  ctx.beginPath();
-  ctx.moveTo(22.3, 12.0);
-  ctx.bezierCurveTo(22.3, 13.3, 19.4, 14.3, 15.9, 14.3);
-  ctx.bezierCurveTo(12.4, 14.3, 9.6, 13.3, 9.6, 12.0);
-  ctx.bezierCurveTo(9.6, 10.8, 12.4, 9.7, 15.9, 9.7);
-  ctx.bezierCurveTo(19.4, 9.7, 22.3, 10.8, 22.3, 12.0);
-  ctx.closePath();
-  ctx.fillStyle = "rgb(0, 190, 255)";
+  ctx.rect(shipX,shipY,30,30);
+  ctx.fillStyle = '#FF530D';
   ctx.fill();
+  ctx.closePath();
+  fondo = ctx.getImageData(5, 5,23, 23);
   ship = ctx.getImageData(0, 0, 30, 30);// Save ship data.
-  ctx.putImageData(fondo, 2, 2);// Erase it for now.
+  ctx.putImageData(fondo, 0, 0);// Erase it for now.
 }
 
 function doGameLoop() {
   let ctx = getCanvasContext('canvas');
-  // pone en la nuevo posicion
-
-// pone en la posicion anterior
-  //HaceRastro(ctx);
-  //ship = ctx.getImageData(2, 2, 28, 28);
-
   ctx.putImageData(ship, shipX, shipY);
-  //HaceRastro(ctx);
-
-  //ctx.putImageData(fondo,oldShipX, oldShipY);
-
-//  rastro=contexto.getImageData(0, 0, 30, 30); //guardo la pelota de rastro
-
-
-
+  shipX == (parseInt($("#dificultad")[0].value)-1)*30 && shipY == (parseInt($("#dificultad")[0].value)-1)*30  ? alert("tomela Andrey grande y peluda") && clearInterval()
+  : false;
 }
 
 
 function whatKey(evt, grid) {
-
   grid.forEach(x => mostrar(x,30)); //reconstruye el maze
-  //muros = SaberMuros(shipX,shipY);
-  HaceRastro(getCanvasContext('canvas'));
+  muros = SaberMuros(shipX,shipY,grid);
   console.log(Sabercell(oldShipX,oldShipY,grid));
   mostrar(Sabercell(oldShipX,oldShipY,grid),30);
-  //guarda posicion antes del intento
   let a= oldShipX;
   oldShipX = shipX;
   oldShipY = shipY;
-  console.log(evt.keyCode);
+  HaceRastro(getCanvasContext('canvas'));
   switch (evt.keyCode) {
 
     case 37: //izquierda
-    shipX = shipX - 30;
-    console.log(shipX);
-    console.log(shipY);
-    shipX < 0 ? shipX = 0 &&  devolver(oldShipX,oldShipY,grid): false;
-    //muros[3] ? devolver(oldShipX,oldShipY) :false;
+      shipX = shipX - 30;
+      shipX < 0 ? shipX = 0 &&  devolver(oldShipX,oldShipY,grid): false;
+      console.log("izq con x: "+shipX+" y: "+shipY+" indice: "+indice(shipX/30,shipY/30,30));
+      muros[3] ? devolver(oldShipX,oldShipY,grid) :false;
     break;
 
     case 39: //derecha
-    shipX = shipX + 30;
-    (shipX >= (parseInt($("#dificultad")[0].value)*30)) ?  devolver(oldShipX,oldShipY,grid): false;
-    //  muros[1] ? devolver(oldShipX,oldShipY) :false;
+      shipX = shipX + 30;
+      (shipX >= (parseInt($("#dificultad")[0].value)*30)) ?  devolver(oldShipX,oldShipY,grid): false;
+      console.log("dere con x: "+shipX+" y: "+shipY+" indice: "+indice(shipX/30,shipY/30,30));
+      muros[1] ? devolver(oldShipX,oldShipY,grid) :false;
     break;
 
     case 40: //abajo
-    shipY = shipY + 30;
-    (shipY >= (parseInt($("#dificultad")[0].value)*30)) ? devolver(oldShipX,oldShipY,grid): false;
-    // muros[2] ? devolver(oldShipX,oldShipY) :false;
+      shipY = shipY + 30;
+      (shipY >= (parseInt($("#dificultad")[0].value)*30)) ? devolver(oldShipX,oldShipY,grid): false;
+      console.log("abajo con x: "+shipX+" y: "+shipY+" indice: "+indice(shipX/30,shipY/30,30));
+      muros[2] ? devolver(oldShipX,oldShipY,grid) :false;
     break;
 
     case 38: //arriba
-    shipY = shipY - 30;
-    shipY < 0 ? shipY = 0 &&  devolver(oldShipX,oldShipY,grid): false;
-    //muros[0] ? devolver(oldShipX,oldShipY) :false;
+      shipY = shipY - 30;
+      shipY < 0 ? shipY = 0 &&  devolver(oldShipX,oldShipY,grid): false;
+      console.log("arriba con x: "+shipX+" y: "+shipY+" indice: "+indice(shipX/30,shipY/30,30) );
+      muros[0] ? devolver(oldShipX,oldShipY,grid) :false;
     break;
   }
 }
 
 let devolver = (oldX,oldY,grid) => grid[shipX = oldX , shipY = oldY];
 let SaberMuros = (x,y,grid) => grid[indice((y/30),(x/30),30)].paredes;
-let indice = (x,y,tamano) => (x < 0 || y < 0 || x > tamano-1 || y > tamano-1) ? -1 : x + y * tamano;
+//let indice = (x,y,tamano) => (x < 0 || y < 0 || x > tamano-1 || y > tamano-1) ? -1 : x + y * tamano;
+function indice (y,x,tamano){
+  if(x < 0 || y < 0 || x > (parseInt($("#dificultad")[0].value))-1 || y > (parseInt($("#dificultad")[0].value))-1)
+  return -1;
+  else {
+    return (x + y * (parseInt($("#dificultad")[0].value)));
+  }
+}
 let tamano_ = tam => parseInt($("#dificultad")[0].value)*tam;
 let Sabercell = (x,y,grid) => grid[indice((y/30),(x/30),30)];
 
