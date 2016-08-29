@@ -66,9 +66,10 @@ let f = ()=>{
 }
 
 let jugar = (maze) => {
-  makeShip();
-  var RRR = window.setInterval(doGameLoop, 16); // jugar hasta acabar
-  window.addEventListener('keydown', e => whatKey(e,maze), true);
+  let cursor_ =new Cursor();
+  makeShip(getCanvasContext('canvas'),cursor_);
+  var RRR = window.setInterval(doGameLoop, 16,getCanvasContext("canvas"),cursor_); // jugar hasta acabar
+  window.addEventListener('keydown', e => whatKey(e,maze,cursor_), true);
 }
 
 let saveLocal = (themaze) => {
