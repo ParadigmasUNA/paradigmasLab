@@ -11,7 +11,9 @@ if(themaze.remote){
                                    return e;
                                  })
                                  .then(e => {themaze.maze = e; return e})
-                                 .then(e => e.forEach(a=>mostrar(a,themaze.anchoCelda)))
+                                 .then(e => themaze.maze.forEach(a=>mostrar(a,themaze.anchoCelda)))
+                                 .then( _=>jugar(themaze))
+                                 //.then(_=> console.log(themaze.maze))
                                  .catch(e => console.log(e)));
 
     $('#mazeSolve').click(_ => fetch('http://localhost:3000/',{method: 'POST',headers:f(), body: JSON.stringify({opcion:'2', tamano: $("#dificultad")[0].value, maze:JSON.stringify(themaze.maze)})})
@@ -65,11 +67,11 @@ let f = ()=>{
   return myHeaders;
 }
 
-let jugar = (maze) => {
-  let cursor_ =new Cursor();
-  makeShip(getCanvasContext('canvas'),cursor_);
-  var RRR = window.setInterval(doGameLoop, 16,getCanvasContext("canvas"),cursor_); // jugar hasta acabar
-  window.addEventListener('keydown', e => whatKey(e,maze,cursor_), true);
+let jugar = (themaze) => {
+  themaze.cursor = new Cursor();
+  makeShip(themaze.cursor);
+  INTER = window.setInterval(doGameLoop, 16,getCanvasContext("canvas"),themaze.cursor); // jugar hasta acabar
+  window.addEventListener('keydown', e => whatKey(e,themaze.maze,themaze.cursor), true);
 }
 
 let saveLocal = (themaze) => {

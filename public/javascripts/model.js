@@ -7,6 +7,7 @@ class TheMaze{
     this.initCanvas = (tamano,canvasName) => setCanvasSize(tamano,canvasName,this.anchoCelda); //Setea dimnesiones del canvas
     this.worker = undefined;
     this.tamano = 0;
+    this.cursor = undefined;
     }
 }
 

@@ -14,21 +14,8 @@ let setCanvasSize = (tamano,canvasId,anchoCelda) => {
 }
 
 
-
-/********* JUGAR ************/
-/*
-var ship = new Image(); // ship
-var shipX = 0; // current ship position X
-var shipY = 0; // current ship position Y
-var oldShipX = 0; // old ship position var
-var oldShipY = 0; // old ship position Y
-var back = new Image();
-var fondo = new Image();
-var rastro = new Image();
-*/
-
+//JUGARs
 let HaceRastro = (contexto,Cursor) =>{
-  contexto.fillStyle ="red";
   contexto.beginPath();
   contexto.rect(Cursor.ActualX,Cursor.ActualY,30,30);
   contexto.fillStyle = '#B8FF3E';
@@ -36,21 +23,21 @@ let HaceRastro = (contexto,Cursor) =>{
   contexto.closePath();
 }
 
-let makeShip = (ctx,Cursor) => {
-  //let ctx = getCanvasContext('canvas');
+let makeShip = (Cursor) => {
+  let ctx = getCanvasContext('canvas');
   ctx.rect(Cursor.ActualX,Cursor.ActualY,30,30);
   ctx.fillStyle = '#FF530D';
   ctx.fill();
-  ctx.closePath();
   Cursor.fondo = ctx.getImageData(5, 5,23, 23);
   Cursor.ImgCursor = ctx.getImageData(0, 0, 30, 30);// Save ship data.
   ctx.putImageData(Cursor.fondo, 0, 0);// Erase it for now.
+  ctx.closePath();
 }
 
 let doGameLoop = (ctx,Cursor) => {
 
   ctx.putImageData(Cursor.ImgCursor, Cursor.ActualX,Cursor.ActualY);
-  //shipX == (parseInt($("#dificultad")[0].value)-1)*30 && shipY == (parseInt($("#dificultad")[0].value)-1)*30  ? alert("tomela Andrey grande y peluda") && window.clearInterval(RRR)
+  //shipX == (parseInt($("#dificultad")[0].value)-1)*30 && shipY == (parseInt($("#dificultad")[0].value)-1)*30  ?  window.clearInterval(RRR)
   //: false;
 }
 
@@ -62,32 +49,39 @@ function whatKey(evt, grid,Cursor) {
   Cursor.AnteriorX = Cursor.ActualX;
   Cursor.AnteriorY = Cursor.ActualY;
   HaceRastro(getCanvasContext('canvas'),Cursor);
-  //Cursor.ActualX == (parseInt($("#dificultad")[0].value)-1)*30 && Cursor.ActualY == (parseInt($("#dificultad")[0].value)-1)*30  ?   BootstrapDialog.alert("tomela Andrey grande y peluda") && window.clearInterval(RRR)
-  //: false;
+
   switch (evt.keyCode) {
 
     case 37: //izquierda
       Cursor.ActualX = Cursor.ActualX- 30;
       Cursor.ActualX < 0 ? Cursor.ActualX = 0 &&  devolver(grid,Cursor): false;
       muros[3] ? devolver(grid,Cursor) :false;
+      Cursor.ActualX == (parseInt($("#dificultad")[0].value)-1)*30 && Cursor.ActualY == (parseInt($("#dificultad")[0].value)-1)*30  ? window.alert("GANOOO") && window.clearInterval(INTER)
+      : false;
     break;
 
     case 39: //derecha
       Cursor.ActualX = Cursor.ActualX + 30;
       (Cursor.ActualX >= (parseInt($("#dificultad")[0].value)*30)) ?  devolver(grid,Cursor): false;
       muros[1] ? devolver(grid,Cursor) :false;
+      Cursor.ActualX == (parseInt($("#dificultad")[0].value)-1)*30 && Cursor.ActualY == (parseInt($("#dificultad")[0].value)-1)*30  ? window.alert("GANOOO") && window.clearInterval(INTER)
+      : false;
     break;
 
     case 40: //abajo
       Cursor.ActualY = Cursor.ActualY  + 30;
       (Cursor.ActualY  >= (parseInt($("#dificultad")[0].value)*30)) ? devolver(grid,Cursor): false;
       muros[2] ? devolver(grid,Cursor) :false;
+      Cursor.ActualX == (parseInt($("#dificultad")[0].value)-1)*30 && Cursor.ActualY == (parseInt($("#dificultad")[0].value)-1)*30  ? window.alert("GANOOO") && window.clearInterval(INTER)
+      : false;
     break;
 
     case 38: //arriba
       Cursor.ActualY = Cursor.ActualY - 30;
       Cursor.ActualY < 0 ? Cursor.ActualY= 0 &&  devolver(grid,Cursor): false;
       muros[0] ? devolver(grid,Cursor) :false;
+      Cursor.ActualX == (parseInt($("#dificultad")[0].value)-1)*30 && Cursor.ActualY == (parseInt($("#dificultad")[0].value)-1)*30  ? window.alert("GANOOO") && window.clearInterval(INTER)
+      : false;
     break;
   }
 }
