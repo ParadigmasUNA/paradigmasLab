@@ -2,6 +2,12 @@ let initEvents = () => {
     let themaze = new TheMaze();
     themaze.anchoCelda = 30;
 
+$('#mongoPost').click( _ => fetch('http://localhost:3000/', {method: 'POST', headers: f(), body: JSON.stringify({name: 'soy una prueba :p'}) }) );
+$('#mongoGet').click( _ => fetch('http://localhost:3000/', {method: 'POST', headers: f(), mode: 'cors', cache: 'default' })
+                        .then(response => (response.json())
+                        .then(e => JSON.parse(e))
+                        .then(e => console.log(e))));
+
 if(!themaze.remote){
     $('#mazeG').click( _ => fetch('http://localhost:3000/',{method: 'POST',headers:f(), body: JSON.stringify({opcion:'1', tamano: $("#dificultad")[0].value })})
                                  .then(response => response.json())
@@ -43,6 +49,7 @@ if(!themaze.remote){
                                            .catch(e => console.log(e)));
   }
 }
+
 
 let initCanvas = (tamano,ancho) =>{
   setCanvasSize(tamano,'canvas',30);
