@@ -3,7 +3,7 @@ let initEvents = () => {
     themaze.anchoCelda = 30;
 
 if(themaze.remote){
-    $('#mazeG').click( _ => fetch('http://localhost:3000/',{method: 'POST',headers:f(), body: JSON.stringify({opcion:'1', tamano: $("#dificultad")[0].value })})
+    $('#mazeG').click( _ => fetch('http://localhost:3000/mazeGen',{method: 'POST', headers:f(), body: JSON.stringify({tamano: $("#dificultad")[0].value})})
                                  .then(response => response.json())
                                  .then(e => JSON.parse(e))
                                  .then(e => {
@@ -16,7 +16,7 @@ if(themaze.remote){
                                  //.then(_=> console.log(themaze.maze))
                                  .catch(e => console.log(e)));
 
-    $('#mazeSolve').click(_ => fetch('http://localhost:3000/',{method: 'POST',headers:f(), body: JSON.stringify({opcion:'2', tamano: $("#dificultad")[0].value, maze:JSON.stringify(themaze.maze)})})
+    $('#mazeSolve').click(_ => fetch('http://localhost:3000/solveMaze',{method: 'POST',headers:f(), body: JSON.stringify({opcion:'2', tamano: $("#dificultad")[0].value, maze:JSON.stringify(themaze.maze)})})
                               .then(response => response.json())
                               .then(e => JSON.parse(e))
                               .then(e => {

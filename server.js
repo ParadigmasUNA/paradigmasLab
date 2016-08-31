@@ -5,8 +5,8 @@ var bodyParser = require('body-parser');
 var router = express.Router();
 let methodOverride = require('method-override');
 const mzgen = require('./lib/maze');
-const mazeGen = mzgen.MazeGen;
-const solveGen = mzgen.SolveGen;
+const MazeGen = mzgen.MazeGen;
+const SolveGen = mzgen.SolveGen;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -19,23 +19,18 @@ router.get('/', function (req, res){
     res.sendFile(path.join(__dirname + '/view/index.html'));
 });
 
-router.post('/', (req,res) => {
-   if(req.body.opcion=='1'){
-     let maze = new mazeGen();
+router.post('/mazeGen', (req,res) => {
+     let maze = new MazeGen();
      let c = maze.init(parseInt(req.body.tamano));
      res.setHeader('Content-Type', 'application/json');
      res.json(JSON.stringify(c));
-   }
-   else if(req.body.opcion =='2'){
-     let solve = new solveGen();
-     let c = solve.init(parseInt(req.body.tamano), req.body.maze);
-     res.setHeader('Content-Type','application/json');
-     res.json(JSON.stringify(c));
-   }
-   else{
-    console.log('no vino con nada');
-   }
+});
 
+router.post('/solveMaze', (req,resp) =>{
+  let solve = new SolveGen();
+  let c = solve.init(parseInt(req.body.tamano), req.body.maze);
+  res.setHeader('Content-Type','application/json');
+  res.json(JSON.stringify(c));
 });
 
 app.listen(3000, function () {
