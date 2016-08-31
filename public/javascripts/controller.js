@@ -17,7 +17,7 @@ let solveLocal = event => toPromise(event).then(_ => initCanvas(parseInt($("#dif
                                           .then(e => e.forEach(celda => mostrar(celda,themaze.anchoCelda)))
                                           .catch(e => console.log(e))
 
-let genRemote = () => fetch('http://localhost:3000/',{method: 'POST',headers:f(), body: JSON.stringify({opcion:'1', tamano: $("#dificultad")[0].value })})
+let genRemote = () => fetch('http://localhost:3000/genMaze',{method: 'POST',headers:f(), body: JSON.stringify({opcion:'1', tamano: $("#dificultad")[0].value })})
                       .then(response => response.json())
                       .then(e => JSON.parse(e))
                       .then(e => {
@@ -28,7 +28,7 @@ let genRemote = () => fetch('http://localhost:3000/',{method: 'POST',headers:f()
                       .then( _=>jugar(themaze))
                       .catch(e => console.log(e))
 
-let solveRemote = () => fetch('http://localhost:3000/',{method: 'POST',headers:f(), body: JSON.stringify({opcion:'2', tamano: $("#dificultad")[0].value, maze:JSON.stringify(themaze.maze)})})
+let solveRemote = () => fetch('http://localhost:3000/solveMaze',{method: 'POST',headers:f(), body: JSON.stringify({opcion:'2', tamano: $("#dificultad")[0].value, maze:JSON.stringify(themaze.maze)})})
                       .then(response => response.json())
                       .then(e => JSON.parse(e))
                       .then(e => {
@@ -40,13 +40,13 @@ let solveRemote = () => fetch('http://localhost:3000/',{method: 'POST',headers:f
                       .catch(e => console.log(e))
 
 
-    $('#mazeG').click( event => (parseInt($("#tjuego")[0].value) == 0 )? genRemote() : genLocal(event) );
+  $('#mazeG').click( event => (parseInt($("#tjuego")[0].value) == 0 )? genRemote() : genLocal(event) );
 
-    $('#mazeSolve').click( event => (parseInt($("#tjuego")[0].value)==0)? solveRemote() : solveLocal(event) );
+  $('#mazeSolve').click( event => (parseInt($("#tjuego")[0].value)==0)? solveRemote() : solveLocal(event) );
 
-    $('#saveLocal').click(e => toPromise(e).then(_=> saveLocal(themaze)));
+  $('#saveLocal').click(e => toPromise(e).then(_=> saveLocal(themaze)));
 
-    $('#recovery').click(e => toPromise(e).then(e => retrieveLocal())
+  $('#recovery').click(e => toPromise(e).then(e => retrieveLocal())
                                           .then(e => themaze = e)
                                           .then(_ => initCanvas(themaze.tamano,themaze.anchoCelda))
                                           .then(_=> themaze.maze.forEach(celda => mostrar(celda,themaze.anchoCelda)))
