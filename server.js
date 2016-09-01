@@ -142,7 +142,7 @@ router.post('/', (req,res) => {
 
 });
 
-router.route('/mazes')
+router.route('/')
 
 .post((req,res) => {
   console.log('Posting: '+req.body.name);

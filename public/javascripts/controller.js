@@ -4,6 +4,7 @@ let initEvents = () => {
 
 $('#mongoPost').click( _ => fetch('http://localhost:3000/', {method: 'POST', headers: f(), body: JSON.stringify({name: 'soy una prueba :p'}) }) );
 $('#mongoGet').click( _ => fetch('http://localhost:3000/', {method: 'GET', headers: f(), mode: 'cors', cache: 'default' })
+                        .then(response => {console.log(response.text()); return response})
                         .then(response => (response.json())
                         .then(e => JSON.parse(e))
                         .then(e => console.log(e))
