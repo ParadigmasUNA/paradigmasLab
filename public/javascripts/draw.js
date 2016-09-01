@@ -18,7 +18,7 @@ let setCanvasSize = (tamano,canvasId,anchoCelda) => {
 let HaceRastro = (contexto,Cursor) =>{
   contexto.beginPath();
   contexto.rect(Cursor.ActualX,Cursor.ActualY,30,30);
-  contexto.fillStyle = '#B8FF3E';
+  contexto.fillStyle = '#A6AEBF';
   contexto.fill();
   contexto.closePath();
 }
@@ -26,7 +26,7 @@ let HaceRastro = (contexto,Cursor) =>{
 let makeShip = (Cursor) => {
   let ctx = getCanvasContext('canvas');
   ctx.rect(Cursor.ActualX,Cursor.ActualY,30,30);
-  ctx.fillStyle = '#FF530D';
+  ctx.fillStyle = '#6F727F';
   ctx.fill();
   Cursor.fondo = ctx.getImageData(5, 5,23, 23);
   Cursor.ImgCursor = ctx.getImageData(0, 0, 30, 30);// Save ship data.
@@ -107,7 +107,7 @@ let mostrar = (cell,ancho) =>{
     line(ctx,x,y+ancho,x,y);
   if(cell.path == 1){
     ctx.rect(x,y,ancho,ancho);
-    ctx.fillStyle = '#B8FF3E';
+    ctx.fillStyle = '#A6AEBF';
     ctx.fill();
   }
 }

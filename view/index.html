@@ -8,20 +8,88 @@
     <script src="javascripts/draw.js"></script>
     <script src="javascripts/mazec.js"></script>
     <script src="/jquery/jquery.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <head>
-  <body onload="initEvents();">
-    <label>Tipo de Juego</label>
-    <select id="tjuego"/>
-      <option value="0">Remoto</option>
-      <option value="1">Local</option>
-    </select>
-    <label>Dificultad</label>
-    <select id="dificultad"/>
-      <option value="7">Fácil</option>
-      <option value="16">Medio</option>
-      <option value="22">Difícil</option>
-      <option value="30">Boss</option>
-    </select>
+
+
+
+
+  <body onload="initEvents();" style="background-color: #DFE4FF">
+
+
+    <div class="container">
+      <nav class="navbar navbar-default navbar-static-top v" role="navigation" style="margin-bottom: 0">
+            <a class="navbar-brand" style=" font-family: Lucida Console"><span class="glyphicon glyphicon-play"> </span>In The Hell Of Maze</a>
+            <a href="#" data-toggle="modal" data-target="#login-modal" class="navbar-brand navbar-right" style=" font-family: Lucida Console">
+              Login<span class="glyphicon glyphicon-user"> </span>
+            </a>
+      </nav>
+      <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+          <div class="loginmodal-container">
+            <h1>Login Maze</h1><br>
+            <form>
+              <input type="text" name="user" placeholder="Username">
+              <input type="password" name="pass" placeholder="Password">
+              <input type="submit" name="login" class="login loginmodal-submit" value="Login">
+            </form>
+          </div>
+        </div>
+      </div>
+
+    <div class="row">
+      <div class="col-md-4" >
+        <div class="navbar-default sidebar" role="navigation" style="background-color: #DFE4FF">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" style="margin: 15%">
+                  <li>
+                    <button type="button" id ="mazeG" class="btn btn-primary btn-block">
+                      <span class="glyphicon glyphicon-road"></span> Generar Maze
+                    </button>
+                  </li>
+                  <li>
+                      <button id="mazeSolve" id="mazeSolve"type="button" class="btn btn-primary btn-block">
+                        <span class="glyphicon glyphicon-flash"></span>Generar Solucion</button>
+                  </li>
+                  <li>
+                      <button type="button" id="saveLocal" class="btn btn-primary btn-block">
+                        <span class="glyphicon glyphicon-save"></span> Guardar Local
+                      </button>
+                  </li>
+                  <li>
+                    <button type="button" id="recovery" class="btn btn-primary btn-block">
+                      <span class="glyphicon glyphicon-cloud-download"></span> Recuperar Maze
+                    </button>
+                  </li>
+               </ul>
+            </div>
+        </div>
+      </div>
+      <div class="col-md-8" style="background-color: #DFE4FF" >
+        <div class="">
+          <label >Tipo de Juego</label>
+          <select id="tjuego"/>
+            <option value="0">Remoto</option>
+            <option value="1">Local</option>
+          </select>
+          <label>Dificultad</label>
+          <select id="dificultad"/>
+            <option value="7">Fácil</option>
+            <option value="12">Medio</option>
+            <option value="16">Difícil</option>
+            <option value="19">Boss</option>
+          </select>
+        </div>
+          <canvas id="canvas">
+          </canvas>
+      </div>
+    </div>
+  </div>
+
+    <!--
     <button id="mazeG">Generar Maze</button>
     <br>
     <br>
@@ -30,5 +98,6 @@
     <button id="mazeSolve">Generar Solucion</button>
     <button id="saveLocal">Guardar Local</button>
     <button id="recovery">Recuperar Maze</button>
+    -->
   <body>
 </html>
