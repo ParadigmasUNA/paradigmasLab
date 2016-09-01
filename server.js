@@ -7,6 +7,8 @@ let methodOverride = require('method-override');
 var mongodb = require('mongodb');
 var ObjectID = mongodb.ObjectID;
 var mongoose = require('mongoose');
+let Maze = require('./models/maze');
+let USer = require('./models/user');
 const mzgen = require('./lib/maze');
 const mazeGen = mzgen.MazeGen;
 const solveGen = mzgen.SolveGen;
@@ -39,7 +41,7 @@ handleError = (res, reason, message, code) => {
  *    GET: finds all users
  *    POST: creates a new user
  */
-
+/*
 app.get("/users", (req, res) => {
   db.collection(USERS_COLLECTION).find({}).toArray((err, docs) => {
     if (err) {
@@ -74,6 +76,7 @@ app.post("/users", function(req, res) {
  */
 
 //Finds user by name
+/*
  app.get("/users/:name", function(req, res) {
   db.collection(USERS_COLLECTION).findOne({ name: req.params.id }, (err, doc) => {
     if (err) {
@@ -105,7 +108,7 @@ app.delete("/users/:id", function(req, res) {
       res.status(204).end();
     }
   });
-});
+});*/
 
 //-------------------------------------//
 
@@ -137,6 +140,28 @@ router.post('/', (req,res) => {
     console.log('no vino con nada');
    }
 
+});
+
+router.route('/mazes')
+
+.post((req,res) => {
+  console.log('Posting: '+req.body.name);
+  let maze = new Maze(); // New instance of Maze model
+  maze.name = req.body.name;
+  maze.save((err) => {
+    if(err)
+      res.send(err);
+        console.log('Post: '+err);
+    res.json({message: 'Maze created!', 'mazeID': maze._id});
+  });
+})
+
+.get((req,res) => {
+  Maze.find((err,mazes) => {
+    if(err)
+      res.send(err);
+    res.json(mazes);
+  });
 });
 
 app.listen(3000, function () {
