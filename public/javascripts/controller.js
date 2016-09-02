@@ -1,83 +1,83 @@
 let initEvents = () => {
     let themaze = new TheMaze();
     themaze.anchoCelda = 30;
+    const URL = 'http://localhost:3000/'
 
-let genLocal = event => toPromise(event).then(_ => initCanvas(parseInt($("#dificultad")[0].value),themaze.anchoCelda))
-                                        .then(e => new mazec.MazeGen())
-                                        .then(e => e.init(parseInt($("#dificultad")[0].value)))
-                                        .then(e =>themaze.maze = e)
-                                        .then(_ => themaze.tamano = parseInt($("#dificultad")[0].value))
-                                        .then(_=> themaze.maze.forEach(celda => mostrar(celda, themaze.anchoCelda)))
-                                        .then( _=> jugar(themaze))
-                                        .catch(e => console.log(e))
+    let genLocal = event => toPromise(event).then( _ => initCanvas(themaze) )
+                                        .then( _ => createMaze() )
+                                        .then( maze => maze.init(themaze.tamano) )
+                                        .then( maze => setMazeModel(maze) )
+                                        .then( _ => drawMaze(themaze.maze, themaze.anchoCelda) )
+                                        .then( _ => jugar(themaze) )
+                                        .catch( error => console.log(error) )
 
-let solveLocal = event => toPromise(event).then(_ => initCanvas(parseInt($("#dificultad")[0].value),themaze.anchoCelda))
-                                          .then(_ => new mazec.SolveGen())
-                                          .then(e => e.init(parseInt($("#dificultad")[0].value),themaze.maze))
-                                          .then(e => e.forEach(celda => mostrar(celda,themaze.anchoCelda)))
-                                          .catch(e => console.log(e))
+    let solveLocal = event => toPromise(event).then( _ => initCanvas(themaze) )
+                                              .then( _ => createSolveMaze() )
+                                              .then( maze => maze.init(themaze.tamano,themaze.maze) )
+                                              .then( maze => setSolveMazeModel(maze) )
+                                              .then( _ => drawMaze(themaze.solutionMaze, themaze.anchoCelda) )
+                                              .catch( error => console.log(error))
 
-let genRemote = () => fetch('http://localhost:3000/genMaze',{method: 'POST',headers:f(), body: JSON.stringify({tamano: $("#dificultad")[0].value })})
-                      .then(response => response.json())
-                      .then(e => JSON.parse(e))
-                      .then(e => {
-                          initCanvas(parseInt($("#dificultad")[0].value),themaze.anchoCelda);
-                          return e; })
-                      .then(e => {themaze.maze = e; return e})
-                      .then(e => themaze.maze.forEach(a=>mostrar(a,themaze.anchoCelda)))
-                      .then( _=>jugar(themaze))
-                      .catch(e => console.log(e))
+    let genRemote = () => fetch(URL+'genMaze',{ method: 'POST', headers: myheader(), body: stringify({tamano: tamanoActual()}) })
+                          .then( response => response.json() )
+                          .then( json => JSON.parse(json) )
+                          .then( maze => setMazeModel(maze) )
+                          .then( _ => initCanvas(themaze) )
+                          .then( _ => drawMaze(themaze.maze, themaze.anchoCelda) )
+                          .then( _ =>jugar(themaze))
+                          .catch( error => console.log(error))
 
-let solveRemote = () => fetch('http://localhost:3000/solveMaze',{method: 'POST',headers:f(), body: JSON.stringify({tamano: $("#dificultad")[0].value, maze:JSON.stringify(themaze.maze)})})
-                      .then(response => response.json())
-                      .then(e => JSON.parse(e))
-                      .then(e => {
-                          initCanvas(parseInt($("#dificultad")[0].value),themaze.anchoCelda);
-                          return e; })
-                      .then(e => {themaze.solutionMaze = e; return e})
-                      .then(e=> {console.log(e); return e})
-                      .then(e => e.forEach(a=>mostrar(a,themaze.anchoCelda)))
-                      .catch(e => console.log(e))
+    let solRemote = () => fetch(URL+'solveMaze', { method: 'POST', headers: myheader(), body: stringify({tamano: tamanoActual(), maze: stringify(themaze.maze)}) })
+                          .then(response => response.json() )
+                          .then( json => JSON.parse(json) )
+                          .then( maze => setSolveMazeModel(maze))
+                          .then( _ => initCanvas(themaze) )
+                          .then( _ => drawMaze(themaze.solutionMaze, themaze.anchoCelda) )
+                          .catch( error => console.log(error) )
 
 
-  $('#mazeG').click( event => (parseInt($("#tjuego")[0].value) == 0 )? genRemote() : genLocal(event) );
+  $('#mazeG').click( event => ( tipoJuego() == 0 ) ? genRemote() : genLocal(event) );
 
-  $('#mazeSolve').click( event => (parseInt($("#tjuego")[0].value)==0)? solveRemote() : solveLocal(event) );
+  $('#mazeSolve').click( event => ( tipoJuego() == 0 ) ? solRemote() : solveLocal(event) );
 
-  $('#saveLocal').click(e => toPromise(e).then(_=> saveLocal(themaze)));
+  $('#saveLocal').click(event => toPromise(event).then( _ => saveLocal(themaze)));
 
-  $('#recovery').click(e => toPromise(e).then(e => retrieveLocal())
-                                          .then(e => themaze = e)
-                                          .then(_ => initCanvas(themaze.tamano,themaze.anchoCelda))
-                                          .then(_=> themaze.maze.forEach(celda => mostrar(celda,themaze.anchoCelda)))
-                                          .then( _=> jugar(themaze.maze)));
+  $('#recovery').click(event => toPromise(event).then( _ => retrieveLocal())
+                                                .then( newTheMaze => setTheMaze(newTheMaze) )
+                                                .then( _ => initCanvas(themaze, themaze.tamano) )
+                                                .then( _ => drawMaze(themaze.maze, themaze.anchoCelda) )
+                                                .then( _ => jugar(themaze.maze)) );
+
+  let setMazeModel = maze => themaze.maze = maze;
+  let setTheMaze = newTheMaze => themaze = newTheMaze;
+  let setSolveMazeModel = maze => themaze.solutionMaze = maze;
 }
 
-let initCanvas = (tamano,ancho) =>{
-  setCanvasSize(tamano,'canvas',30);
-}
+let createMaze = () => new mazec.MazeGen();
 
-let toPromise = e => Promise.resolve(e);
+let createSolveMaze = () => new mazec.SolveGen();
 
-let f = ()=>{
-  let myHeaders = new Headers({
-  "Content-Type": "application/json"
-  });
-  return myHeaders;
-}
+let drawMaze = (maze, anchoCelda) => maze.forEach(celda => mostrar(celda, anchoCelda));
 
-let jugar = (themaze) => {
+let stringify = object => JSON.stringify(object);
+
+let tipoJuego = () => parseInt($("#tjuego")[0].value);
+
+let tamanoActual = () => parseInt($("#dificultad")[0].value);
+
+let initCanvas = (themaze, tamano = tamanoActual()) => { themaze.tamano = tamano; setCanvasSize(themaze.tamano,'canvas',themaze.anchoCelda)};
+
+let toPromise = object => Promise.resolve(object);
+
+let myheader = () => new Headers( { "Content-Type" : "application/json" } );
+
+let jugar = themaze => {
   themaze.cursor = new Cursor();
   makeShip(themaze.cursor);
   INTER = window.setInterval(doGameLoop, 16,getCanvasContext("canvas"),themaze.cursor); // jugar hasta acabar
   window.addEventListener('keydown', e => whatKey(e,themaze.maze,themaze.cursor), true);
 }
 
-let saveLocal = (themaze) => {
-    localStorage.setItem('themaze',JSON.stringify(themaze));
-}
-let retrieveLocal = () => {
-  let themaze = localStorage.getItem('themaze');
-  themaze = JSON.parse(themaze);
-  return themaze;
-}
+let saveLocal = themaze => localStorage.setItem('themaze',JSON.stringify(themaze));
+
+let retrieveLocal = () => JSON.parse(localStorage.getItem('themaze'));
