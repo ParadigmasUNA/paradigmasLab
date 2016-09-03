@@ -1,11 +1,9 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var UserSchema = require('./user');
 
 var MazeSchema = new Schema({
-  mazeGen: String,
-  solution: String
-/*user: {type: Schema.Types.ObjectID, ref: 'User'}*/
+  mazeGen: Object,
+  id: {type: String, index: {unique: true}}
 })
 
 module.exports = mongoose.model('Maze', MazeSchema);

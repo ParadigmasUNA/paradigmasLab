@@ -8,17 +8,16 @@ var mongodb = require('mongodb');
 var ObjectID = mongodb.ObjectID;
 var mongoose = require('mongoose');
 let Maze = require('./models/maze');
-let USer = require('./models/user');
 const mzgen = require('./lib/maze');
 const mazeGen = mzgen.MazeGen;
 const solveGen = mzgen.SolveGen;
+mongoose.Promise = global.Promise;
 
 //Database
 
 var db;
-var USERS_COLLECTION = "users";
 
-mongodb.MongoClient.connect("mongodb://localhost:27017/maze",function (err, database) {
+/*mongodb.MongoClient.connect("mongodb://localhost:27017/mazes", (err, database)=> {
   if (err) {
     console.log(err);
     process.exit(1);
@@ -27,7 +26,9 @@ mongodb.MongoClient.connect("mongodb://localhost:27017/maze",function (err, data
   // Save database object from the callback for reuse.
   db = database;
   console.log("Database connection ready");
-});
+});*/
+
+mongoose.connect('mongodb://localhost:27017/mazes');
 
 //USERS API ROUTES BELOW
 
@@ -142,26 +143,32 @@ router.post('/', (req,res) => {
 
 });
 
-router.route('/')
-
-.post((req,res) => {
-  console.log('Posting: '+req.body.name);
+router.post('/mazes',(req,res) => {
+  console.log('Posting: '+ req.body.id);
   let maze = new Maze(); // New instance of Maze model
-  maze.name = req.body.name;
-  maze.save((err) => {
-    if(err)
+  maze.id = req.body.id;
+  maze.mazeGen = req.body.mazeGen;
+  /*maze.save((err) => {
+    if(err){
       res.send(err);
-        console.log('Post: '+err);
+      console.log('Post: '+err);
+    }
     res.json({message: 'Maze created!', 'mazeID': maze._id});
-  });
-})
+  });*/
+  maze.save().catch(err => console.log(err));
+});
 
-.get((req,res) => {
-  Maze.find((err,mazes) => {
-    if(err)
+router.get('/mazes',(req,res) => {
+  /*Maze.find({},(err,mazes) => {
+    if(err){
       res.send(err);
-    res.json(mazes);
-  });
+      console.log('error db');
+    }
+    res.send(mazes);
+  });*/
+  Maze.find().exec()
+    .then(mazes => res.send(mazes))
+    .catch(err => console.log('Error db'));
 });
 
 app.listen(3000, function () {

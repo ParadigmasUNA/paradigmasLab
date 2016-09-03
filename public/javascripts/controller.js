@@ -2,12 +2,11 @@ let initEvents = () => {
     let themaze = new TheMaze();
     themaze.anchoCelda = 30;
 
-$('#mongoPost').click( _ => fetch('http://localhost:3000/', {method: 'POST', headers: f(), body: JSON.stringify({name: 'soy una prueba :p'}) }) );
-$('#mongoGet').click( _ => fetch('http://localhost:3000/', {method: 'GET', headers: f(), mode: 'cors', cache: 'default' })
-                        .then(response => {console.log(response.text()); return response})
+$('#mongoPost').click( _ => fetch('http://localhost:3000/mazes', {method: 'POST', headers: f(), body: JSON.stringify({id: 'soy una prueba :p', mazeGen: themaze}) }) );
+$('#mongoGet').click( _ => fetch('http://localhost:3000/mazes', {method: 'GET', headers: f(), mode: 'cors', cache: 'default' })
+                        .then(response => {console.log(response); return response})
                         .then(response => (response.json())
-                        .then(e => JSON.parse(e))
-                        .then(e => console.log(e))
+                        .then(e => e.forEach(i => console.log(i)))
                         .catch(err => console.log(err))));
 
 if(!themaze.remote){
