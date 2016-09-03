@@ -78,6 +78,14 @@ router.get('/mazes',(req,res) => {
     .then(mazes => res.send(mazes))
     .catch(err => console.log('Error db'));
 });
+ //-----------maze by id-------------//
+
+ router.get('/mazes/:maze_id',(req,res) => {
+   console.log('Getting maze with id: '+ req.params.maze_id);
+   Maze.find({id: req.params.maze_id}).exec()
+   .then(maze => res.send(maze))
+   .catch(err =>  console.log(err))
+ });
 
 app.listen(3000, function () {
   console.log('Server is listening on port 3000!');

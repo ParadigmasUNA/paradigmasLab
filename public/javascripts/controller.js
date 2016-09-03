@@ -35,8 +35,8 @@ let initEvents = () => {
                           .then( _ => drawMaze(themaze.solutionMaze, themaze.anchoCelda) )
                           .catch( error => console.log(error) )
 
-$('#mongoPost').click( _ => fetch('http://localhost:3000/mazes', {method: 'POST', headers: f(), body: JSON.stringify({id: 'soy una prueba :p', mazeGen: themaze}) }) );
-$('#mongoGet').click( _ => fetch('http://localhost:3000/mazes', {method: 'GET', headers: f(), mode: 'cors', cache: 'default' })
+$('#saveRemote').click( _ => fetch(URL+'mazes', {method: 'POST', headers: myheader(), body: JSON.stringify({id: String(contador), mazeGen: themaze}) }) );
+$('#recoveryRemote').click( _ => fetch(URL+'mazes/'+String(contador), {method: 'GET', headers: myheader(), body: {id: '0'}, mode: 'cors', cache: 'default' })
                         .then(response => {console.log(response); return response})
                         .then(response => (response.json())
                         .then(e => e.forEach(i => console.log(i)))
@@ -71,6 +71,8 @@ let tipoJuego = () => parseInt($("#tjuego")[0].value);
 
 let tamanoActual = () => parseInt($("#dificultad")[0].value);
 
+let contador = 0;
+
 let initCanvas = (themaze, tamano = tamanoActual()) => { themaze.tamano = tamano; setCanvasSize(themaze.tamano,'canvas',themaze.anchoCelda)};
 
 let toPromise = object => Promise.resolve(object);
@@ -78,6 +80,7 @@ let toPromise = object => Promise.resolve(object);
 let myheader = () => new Headers( { "Content-Type" : "application/json" } );
 
 let jugar = themaze => {
+  contador++;
   themaze.cursor = new Cursor();
   makeShip(themaze.cursor);
   INTER = window.setInterval(doGameLoop, 16,getCanvasContext("canvas"),themaze.cursor); // jugar hasta acabar
