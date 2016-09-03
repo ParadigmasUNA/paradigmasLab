@@ -13,6 +13,86 @@ let setCanvasSize = (tamano,canvasId,anchoCelda) => {
     document.getElementById(canvasId).height = tamano * anchoCelda+30;
 }
 
+
+//JUGARs
+let HaceRastro = (contexto,Cursor) =>{
+  contexto.beginPath();
+  contexto.rect(Cursor.ActualX,Cursor.ActualY,30,30);
+  contexto.fillStyle = '#A6AEBF';
+  contexto.fill();
+  contexto.closePath();
+}
+
+let makeShip = (Cursor) => {
+  let ctx = getCanvasContext('canvas');
+  ctx.rect(Cursor.ActualX,Cursor.ActualY,30,30);
+  ctx.fillStyle = '#6F727F';
+  ctx.fill();
+  Cursor.fondo = ctx.getImageData(5, 5,23, 23);
+  Cursor.ImgCursor = ctx.getImageData(0, 0, 30, 30);// Save ship data.
+  ctx.putImageData(Cursor.fondo, 0, 0);// Erase it for now.
+  ctx.closePath();
+}
+
+let doGameLoop = (ctx,Cursor) => {
+
+  ctx.putImageData(Cursor.ImgCursor, Cursor.ActualX,Cursor.ActualY);
+  //shipX == (parseInt($("#dificultad")[0].value)-1)*30 && shipY == (parseInt($("#dificultad")[0].value)-1)*30  ?  window.clearInterval(RRR)
+  //: false;
+}
+
+
+function whatKey(evt, grid,Cursor) {
+  grid.forEach(x => mostrar(x,30)); //reconstruye el maze
+  muros = SaberMuros(grid,Cursor);
+  Sabercell(grid,Cursor).path = 1;
+  Cursor.AnteriorX = Cursor.ActualX;
+  Cursor.AnteriorY = Cursor.ActualY;
+  HaceRastro(getCanvasContext('canvas'),Cursor);
+
+  switch (evt.keyCode) {
+
+    case 37: //izquierda
+      Cursor.ActualX = Cursor.ActualX- 30;
+      Cursor.ActualX < 0 ? Cursor.ActualX = 0 &&  devolver(grid,Cursor): false;
+      muros[3] ? devolver(grid,Cursor) :false;
+      Cursor.ActualX == (parseInt($("#dificultad")[0].value)-1)*30 && Cursor.ActualY == (parseInt($("#dificultad")[0].value)-1)*30  ? window.alert("GANOOO") && window.clearInterval(INTER)
+      : false;
+    break;
+
+    case 39: //derecha
+      Cursor.ActualX = Cursor.ActualX + 30;
+      (Cursor.ActualX >= (parseInt($("#dificultad")[0].value)*30)) ?  devolver(grid,Cursor): false;
+      muros[1] ? devolver(grid,Cursor) :false;
+      Cursor.ActualX == (parseInt($("#dificultad")[0].value)-1)*30 && Cursor.ActualY == (parseInt($("#dificultad")[0].value)-1)*30  ? window.alert("GANOOO") && window.clearInterval(INTER)
+      : false;
+    break;
+
+    case 40: //abajo
+      Cursor.ActualY = Cursor.ActualY  + 30;
+      (Cursor.ActualY  >= (parseInt($("#dificultad")[0].value)*30)) ? devolver(grid,Cursor): false;
+      muros[2] ? devolver(grid,Cursor) :false;
+      Cursor.ActualX == (parseInt($("#dificultad")[0].value)-1)*30 && Cursor.ActualY == (parseInt($("#dificultad")[0].value)-1)*30  ? window.alert("GANOOO") && window.clearInterval(INTER)
+      : false;
+    break;
+
+    case 38: //arriba
+      Cursor.ActualY = Cursor.ActualY - 30;
+      Cursor.ActualY < 0 ? Cursor.ActualY= 0 &&  devolver(grid,Cursor): false;
+      muros[0] ? devolver(grid,Cursor) :false;
+      Cursor.ActualX == (parseInt($("#dificultad")[0].value)-1)*30 && Cursor.ActualY == (parseInt($("#dificultad")[0].value)-1)*30  ? window.alert("GANOOO") && window.clearInterval(INTER)
+      : false;
+    break;
+  }
+}
+
+let devolver = (grid,Cursor) => grid[Cursor.ActualX= Cursor.AnteriorX , Cursor.ActualY= Cursor.AnteriorY ];
+let SaberMuros = (grid,Cursor) => grid[indice(Cursor)].paredes ;
+let indice = (Cursor) => Cursor.ActualX/30 < 0 || Cursor.ActualY/30 < 0 || Cursor.ActualX/30 > (parseInt($("#dificultad")[0].value))-1 || Cursor.ActualY/30 > (parseInt($("#dificultad")[0].value))-1 ? -1 : Cursor.ActualX/30 + Cursor.ActualY/30 * (parseInt($("#dificultad")[0].value)) ;
+let tamano_ = tam => parseInt($("#dificultad")[0].value)*tam;
+let Sabercell = (grid,Cursor) => grid[indice(Cursor)];
+
+
 let mostrar = (cell,ancho) =>{
   let x = cell.i * ancho;
   let y = cell.j * ancho;
@@ -27,7 +107,7 @@ let mostrar = (cell,ancho) =>{
     line(ctx,x,y+ancho,x,y);
   if(cell.path == 1){
     ctx.rect(x,y,ancho,ancho);
-    ctx.fillStyle = '#B8FF3E';
+    ctx.fillStyle = '#A6AEBF';
     ctx.fill();
   }
 }
