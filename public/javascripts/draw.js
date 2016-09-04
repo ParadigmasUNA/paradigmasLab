@@ -1,3 +1,22 @@
+/*
+
+Proyecto 1 | Paradigmas de Programación
+
+II ciclo - 2016
+
+Laberinto Remoto|Local
+
+Grupo 1 - 8am
+
+Carlos Artavia Pineda
+Andrey Campos Sánchez
+Fabián Hernández Chavarria
+Omar Segura Villegas
+
+2016
+
+*/
+
 let line = (ctx,x1,y1,x2,y2) =>{  //Dibuja una linea desde un punto dado hasta otro
   ctx.beginPath();
   ctx.moveTo(x1,y1);
