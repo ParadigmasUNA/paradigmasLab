@@ -43,6 +43,7 @@ $('#remoteRecover').click( _ => fetch(URL+mazeNum(), {method: 'GET', headers: my
                                 .then( response => setTheMaze(response[0].maze))
                                 .then( _ => initCanvas(themaze))
                                 .then( _ => drawMaze(themaze.maze, themaze.anchoCelda))
+                                .then(_ => jugarContinuacion(themaze))
                                 .catch(err => console.log(err)));
 
   $('#mazeG').click( event => ( tipoJuego() == 0 ) ? genRemote() : genLocal(event) );
@@ -55,7 +56,8 @@ $('#remoteRecover').click( _ => fetch(URL+mazeNum(), {method: 'GET', headers: my
                                                 .then( newTheMaze => setTheMaze(newTheMaze) )
                                                 .then( _ => initCanvas(themaze, themaze.tamano) )
                                                 .then( _ => drawMaze(themaze.maze, themaze.anchoCelda) )
-                                                .then( _ => jugar(themaze.maze)) );
+                                                .then( _ => jugarContinuacion(themaze))
+                                                .catch(err => console.log(err)));
 
   let setMazeModel = maze => themaze.maze = maze;
   let setTheMaze = newTheMaze => themaze = newTheMaze;
@@ -101,6 +103,15 @@ let jugar = themaze => {
   $(window).off('keydown');
   (INTER)? clearInterval(INTER) : false;
   themaze.cursor = new Cursor();
+  makeShip(themaze.cursor);
+  INTER = setInterval(doGameLoop, 100,getCanvasContext("canvas"),themaze.cursor); // jugar hasta acabar
+  $(window).on('keydown', e => whatKey(e,themaze.maze,themaze.cursor));
+}
+
+let jugarContinuacion = themaze => {
+  $(window).off('keydown');
+  (INTER)? clearInterval(INTER) : false;
+  //themaze.cursor = new Cursor();
   makeShip(themaze.cursor);
   INTER = setInterval(doGameLoop, 100,getCanvasContext("canvas"),themaze.cursor); // jugar hasta acabar
   $(window).on('keydown', e => whatKey(e,themaze.maze,themaze.cursor));

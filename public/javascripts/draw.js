@@ -28,17 +28,12 @@ let makeShip = (Cursor) => {
   ctx.rect(Cursor.ActualX,Cursor.ActualY,30,30);
   ctx.fillStyle = '#6F727F';
   ctx.fill();
-  Cursor.fondo = ctx.getImageData(5, 5,23, 23);
-  Cursor.ImgCursor = ctx.getImageData(0, 0, 30, 30);// Save ship data.
-  ctx.putImageData(Cursor.fondo, 0, 0);// Erase it for now.
+  Cursor.ImgCursor = ctx.getImageData(Cursor.ActualX, Cursor.ActualY, 30, 30);// Save ship data.
   ctx.closePath();
 }
 
 let doGameLoop = (ctx,Cursor) => {
-
   ctx.putImageData(Cursor.ImgCursor, Cursor.ActualX,Cursor.ActualY);
-  //shipX == (parseInt($("#dificultad")[0].value)-1)*30 && shipY == (parseInt($("#dificultad")[0].value)-1)*30  ?  window.clearInterval(RRR)
-  //: false;
 }
 
 
