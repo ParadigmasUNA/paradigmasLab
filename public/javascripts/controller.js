@@ -60,7 +60,21 @@ $('#remoteRecover').click( _ => fetch(URL+mazeNum(), {method: 'GET', headers: my
   let setMazeModel = maze => themaze.maze = maze;
   let setTheMaze = newTheMaze => themaze = newTheMaze;
   let setSolveMazeModel = maze => themaze.solutionMaze = maze;
+
+  $('#saveImage').click(event => download());
+
 }
+
+let download = () => {
+  var canvas = document.getElementById("canvas");
+  var image = canvas.toDataURL();
+  var aLink = document.createElement('a');
+  var evt = document.createEvent("HTMLEvents");
+  evt.initEvent("click");
+  aLink.download = 'image.jpg';
+  aLink.href = image;
+  aLink.dispatchEvent(evt);
+};
 
 let createMaze = () => new mazec.MazeGen();
 
