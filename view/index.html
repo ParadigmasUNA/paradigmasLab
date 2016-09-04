@@ -24,17 +24,16 @@
       <nav class="navbar navbar-default navbar-static-top v" role="navigation" style="margin-bottom: 0">
             <a class="navbar-brand" style=" font-family: Lucida Console"><span class="glyphicon glyphicon-play"> </span>In The Hell Of Maze</a>
             <a href="#" data-toggle="modal" data-target="#login-modal" class="navbar-brand navbar-right" style=" font-family: Lucida Console">
-              Find Maze<span class="glyphicon glyphicon-user"> </span>
+              Cargar Maze Remoto<span class="glyphicon glyphicon-user"> </span>
             </a>
       </nav>
       <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
           <div class="loginmodal-container">
-            <h1>Login Maze</h1><br>
+            <h1>Recuperar Maze Remoto</h1><br>
             <form>
-              <input type="text" name="user" placeholder="Username">
-              <input type="password" name="pass" placeholder="Password">
-              <input type="submit" name="login" class="login loginmodal-submit" value="Login">
+              <input type="text" name="id" placeholder="Numero de Maze" id="id">
+              <input type="button" id="remoteRecover" name="recover" class="login loginmodal-submit" value="Recuperar">
             </form>
           </div>
         </div>
@@ -67,11 +66,6 @@
                       <button type="button" id="saveRemote" class="btn btn-primary btn-block">
                         <span class="glyphicon glyphicon-save"></span> Guardar Remoto
                       </button>
-                  </li>
-                  <li>
-                    <button type="button" id="recoveryRemote" class="btn btn-primary btn-block">
-                      <span class="glyphicon glyphicon-cloud-download"></span> Recuperar Maze Remoto
-                    </button>
                   </li>
                </ul>
             </div>

@@ -19,20 +19,7 @@ mongoose.Promise = global.Promise;
 
 var db;
 
-/*mongodb.MongoClient.connect("mongodb://localhost:27017/mazes", (err, database)=> {
-  if (err) {
-    console.log(err);
-    process.exit(1);
-  }
-
-  // Save database object from the callback for reuse.
-  db = database;
-  console.log("Database connection ready");
-});*/
-
 mongoose.connect('mongodb://localhost:27017/mazes');
-
-//USERS API ROUTES BELOW
 
 //error handler
 handleError = (res, reason, message, code) => {
@@ -63,27 +50,15 @@ router.post('/solveMaze', (req,res) => promise(req).then( _ => res.setHeader('Co
                                                    .then(mazeSolve => res.json(JSON.stringify(mazeSolve)))
                                                    .catch(error => console.log(error)) );
 
-router.post('/mazes',(req,res) => {
-  console.log('Posting: '+ req.body.id);
-  let maze = new Maze(); // New instance of Maze model
-  maze.id = req.body.id;
-  maze.mazeGen = req.body.mazeGen;
-  maze.save().catch(err => console.log(err));
-});
+router.post('/saveMaze', (req,res) => promise(req).then( _ => new Maze())
+                                                  .then( maze => {maze.maze = req.body.maze; return maze;})
+                                                  .then(maze => maze.save())
+                                                  .catch(error => console.log(error))
+);
 
-router.get('/mazes',(req,res) => {
-  Maze.find().exec()
-    .then(mazes => res.send(mazes))
-    .catch(err => console.log('Error db'));
-});
- //-----------maze by id-------------//
-
- router.get('/mazes/:maze_id',(req,res) => {
-   console.log('Getting maze with id: '+ req.params.maze_id);
-   Maze.find({id: req.params.maze_id}).exec()
-   .then(maze => res.send(maze))
-   .catch(err =>  console.log(err))
- });
+router.get('/:id', (req,res) => Maze.find({id: req.params.id}).exec().then(maze => res.send(maze))
+                                                                     .catch(error =>  console.log(error))
+);
 
 app.listen(3000, function () {
   console.log('Server is listening on port 3000!');
