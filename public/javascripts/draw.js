@@ -49,40 +49,33 @@ function whatKey(evt, grid,Cursor) {
   Cursor.AnteriorX = Cursor.ActualX;
   Cursor.AnteriorY = Cursor.ActualY;
   HaceRastro(getCanvasContext('canvas'),Cursor);
-
+  Cursor.ActualX == (parseInt($("#dificultad")[0].value)-1)*30 && Cursor.ActualY == (parseInt($("#dificultad")[0].value)-1)*30  ? window.alert("GANOOO") && window.clearInterval(INTER)
+  : false;
   switch (evt.keyCode) {
 
     case 37: //izquierda
       Cursor.ActualX = Cursor.ActualX- 30;
       Cursor.ActualX < 0 ? Cursor.ActualX = 0 &&  devolver(grid,Cursor): false;
       muros[3] ? devolver(grid,Cursor) :false;
-      Cursor.ActualX == (parseInt($("#dificultad")[0].value)-1)*30 && Cursor.ActualY == (parseInt($("#dificultad")[0].value)-1)*30  ? window.alert("GANOOO") && window.clearInterval(INTER)
-      : false;
-    break;
+      break;
 
     case 39: //derecha
       Cursor.ActualX = Cursor.ActualX + 30;
       (Cursor.ActualX >= (parseInt($("#dificultad")[0].value)*30)) ?  devolver(grid,Cursor): false;
       muros[1] ? devolver(grid,Cursor) :false;
-      Cursor.ActualX == (parseInt($("#dificultad")[0].value)-1)*30 && Cursor.ActualY == (parseInt($("#dificultad")[0].value)-1)*30  ? window.alert("GANOOO") && window.clearInterval(INTER)
-      : false;
-    break;
+      break;
 
     case 40: //abajo
       Cursor.ActualY = Cursor.ActualY  + 30;
       (Cursor.ActualY  >= (parseInt($("#dificultad")[0].value)*30)) ? devolver(grid,Cursor): false;
       muros[2] ? devolver(grid,Cursor) :false;
-      Cursor.ActualX == (parseInt($("#dificultad")[0].value)-1)*30 && Cursor.ActualY == (parseInt($("#dificultad")[0].value)-1)*30  ? window.alert("GANOOO") && window.clearInterval(INTER)
-      : false;
-    break;
+      break;
 
     case 38: //arriba
       Cursor.ActualY = Cursor.ActualY - 30;
       Cursor.ActualY < 0 ? Cursor.ActualY= 0 &&  devolver(grid,Cursor): false;
       muros[0] ? devolver(grid,Cursor) :false;
-      Cursor.ActualX == (parseInt($("#dificultad")[0].value)-1)*30 && Cursor.ActualY == (parseInt($("#dificultad")[0].value)-1)*30  ? window.alert("GANOOO") && window.clearInterval(INTER)
-      : false;
-    break;
+        break;
   }
 }
 

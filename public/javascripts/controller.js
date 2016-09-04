@@ -82,11 +82,14 @@ let toPromise = object => Promise.resolve(object);
 
 let myheader = () => new Headers( { "Content-Type" : "application/json" } );
 
+let INTER;
 let jugar = themaze => {
+  $(window).off('keydown');
+  (INTER)? clearInterval(INTER) : false;
   themaze.cursor = new Cursor();
   makeShip(themaze.cursor);
-  INTER = window.setInterval(doGameLoop, 16,getCanvasContext("canvas"),themaze.cursor); // jugar hasta acabar
-  window.addEventListener('keydown', e => whatKey(e,themaze.maze,themaze.cursor), true);
+  INTER = setInterval(doGameLoop, 100,getCanvasContext("canvas"),themaze.cursor); // jugar hasta acabar
+  $(window).on('keydown', e => whatKey(e,themaze.maze,themaze.cursor));
 }
 
 let saveLocal = themaze => localStorage.setItem('themaze',JSON.stringify(themaze));
