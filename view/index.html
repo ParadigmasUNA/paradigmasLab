@@ -24,7 +24,7 @@
       <nav class="navbar navbar-default navbar-static-top v" role="navigation" style="margin-bottom: 0">
             <a class="navbar-brand" style=" font-family: Lucida Console"><span class="glyphicon glyphicon-play"> </span>In The Hell Of Maze</a>
             <a href="#" data-toggle="modal" data-target="#login-modal" class="navbar-brand navbar-right" style=" font-family: Lucida Console">
-              Login<span class="glyphicon glyphicon-user"> </span>
+              Find Maze<span class="glyphicon glyphicon-user"> </span>
             </a>
       </nav>
       <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -63,6 +63,15 @@
                     <button type="button" id="recovery" class="btn btn-primary btn-block">
                       <span class="glyphicon glyphicon-cloud-download"></span> Recuperar Maze
                     </button>
+                  <li>
+                      <button type="button" id="saveRemote" class="btn btn-primary btn-block">
+                        <span class="glyphicon glyphicon-save"></span> Guardar Remoto
+                      </button>
+                  </li>
+                  <li>
+                    <button type="button" id="recoveryRemote" class="btn btn-primary btn-block">
+                      <span class="glyphicon glyphicon-cloud-download"></span> Recuperar Maze Remoto
+                    </button>
                   </li>
                </ul>
             </div>
@@ -93,6 +102,9 @@
     <button id="mazeG">Generar Maze</button>
     <br>
     <br>
+    <button id='mongoPost'> Mongo Post </button>
+    <button id='mongoGet'> Mongo Get </button>
+    <input type="text" id="field" disabled="true"></input>
     <canvas id="canvas">
     </canvas>
     <button id="mazeSolve">Generar Solucion</button>
