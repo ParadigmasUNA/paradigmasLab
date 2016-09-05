@@ -1,9 +1,29 @@
+/*
+
+Proyecto 1 | Paradigmas de Programación
+
+II ciclo - 2016
+
+Laberinto Remoto|Local
+
+Grupo 1 - 8am
+
+Carlos Artavia Pineda
+Andrey Campos Sánchez
+Fabián Hernández Chavarria
+Omar Segura Villegas
+
+2016
+
+*/
+
 let initEvents = () => {
     let themaze = new TheMaze();
     themaze.anchoCelda = 30;
     const URL = 'http://localhost:3000/'
 
-    let genLocal = event => toPromise(event).then( _ => initCanvas(themaze) )
+    let genLocal = event => toPromise(event).then(_ => disappearWin())
+                                            .then( _ => initCanvas(themaze) )
                                             .then( _ => createMaze() )
                                             .then( maze => maze.init(themaze.tamano) )
                                             .then( maze => setMazeModel(maze) )
@@ -23,6 +43,7 @@ let initEvents = () => {
                           .then( json => JSON.parse(json) )
                           .then( maze => setMazeModel(maze) )
                           .then( _ => initCanvas(themaze) )
+                          .then(_ => disappearWin())
                           .then( _ => drawMaze(themaze.maze, themaze.anchoCelda) )
                           .then( _ =>jugar(themaze))
                           .catch( error => console.log(error))
@@ -130,6 +151,8 @@ let initCanvas = (themaze, tamano = tamanoActual()) => { themaze.tamano = tamano
 let toPromise = object => Promise.resolve(object);
 
 let myheader = () => new Headers( { "Content-Type" : "application/json" } );
+
+let disappearWin = () => $("#win").css('display','none');
 
 let INTER;
 let jugar = themaze => {
