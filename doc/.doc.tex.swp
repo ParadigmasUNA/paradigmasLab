@@ -22,6 +22,9 @@
 \includegraphics[scale=0.5]{logouna}
 \centering
 \end{figure}
+\begin{flushright}
+Documento Resumen del Proyecto \\ Heredia, 2016
+\end{flushright}
 
 \newpage
 
@@ -47,6 +50,12 @@ La manera de resolución fue la planteada en clase por el profesor, una aplicaci
 	Para el manejo de eventos, se utilizó jQuery, una biblioteca de Javascript para simplificar la manera de interactuar con los elementos del DOM.\\
 	Al enviar las peticiones al servidor, se aplican promesas de ES6 para evitar el \textit{código spaguetti} con los callbacks y para visualizar mejor el flujo de trabajo de los algoritmos.\\
 	Con respecto al servidor se empleó express como framework de Node.js para la infraestructura del servidor, y por último se implementó la persistencia de datos en MongoDB. A continuación un esquema que ilustra lo anteriormente mencionado.\\
+
+\begin{figure}[H] 
+\includegraphics[scale=1.0]{mongo}
+\centering
+\caption{clase Maze.js}
+\end{figure}
 
 \section{Algoritmos importantes}
 La generación del laberinto se resolvió por medio del algoritmo de backtracking como idea principal, donde se tiene una clase “Maze” que a su vez  contiene un grid que es un conjunto de objetos celda que se construyen a partir del nivel que el usuario seleccionó, por medio de tamaños predeterminados previamente. \\
