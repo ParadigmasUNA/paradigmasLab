@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: cells.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: cells.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+
+Proyecto 1 | Paradigmas de Programación
+
+II ciclo - 2016
+
+Laberinto Remoto|Local
+
+Grupo 1 - 8am
+
+Carlos Artavia Pineda
+Andrey Campos Sánchez
+Fabián Hernández Chavarria
+Omar Segura Villegas
+
+2016
+
+*/
+
+const mutil = require('./util');
+const index = mutil.index;
+
+/**
+* Representa una celda del laberinto.
+* Requiere el módulo {@link util.js}
+* @class
+* @requires util.js
+*/
+
+class Cell{
+  /**
+  * Crea una celda.
+  *@param {number} i - Posición i
+  *@param {number} j - Posición j
+  *@param {array} paredes - Paredes de la celda (inicia con todas sus líneas)
+  *@returns {object} Retorna un vecino aleatorio, si no tiene devuelve undefined
+  */
+  constructor(i, j, paredes = [true,true,true,true]){
+    this.i = i;
+    this.j = j;
+    this.paredes = paredes; //0->Arriba | 1->Derecha | 2->Abajo | 3-> Izquierda
+    this.visited = false;
+    this.path = 0;
+
+    /**
+    * Revisa celdas vecinas
+    *@function checkNeighbors
+    *@param {array} grid - array de celdas
+    *@param {array} neighbors - celdas vecinas
+    *@param {number} dif - ancho de la celda
+    *@returns {array} Cuadrícula aleatoria
+    */
+
+    this.checkNeighbors = (grid, neighbors, dif) => {
+      let top = grid[index(this.i,this.j-1,dif)];
+      let rigth = grid[index(this.i+1,this.j,dif)];
+      let bottom = grid[index(this.i,this.j+1,dif)];
+      let left = grid[index(this.i-1,this.j,dif)];
+
+      if(top &amp;&amp; !top.visited)
+        neighbors.push(top);
+      if(rigth &amp;&amp; !rigth.visited)
+        neighbors.push(rigth);
+      if(bottom &amp;&amp; !bottom.visited)
+        neighbors.push(bottom);
+      if(left &amp;&amp; !left.visited)
+        neighbors.push(left);
+
+      /** Retorna un vecino aleatorio, sino tiene devuelve undefined */
+      return (neighbors.length > 0) ? neighbors[Math.floor(Math.random() * neighbors.length)] : undefined;
+    }
+    /**
+    * Revisa paredes
+    *@function checkWalls
+    *@param {array} grid - array de celdas
+    *@param {array} neighbors - celdas vecinas
+    *@param {number} dif - ancho de la celda
+    *@returns {array} Retorna arreglo de paredes vecinas
+    */
+    this.checkWalls = (grid, neighbors, dif) => {
+      let top = grid[index(this.i,this.j-1,dif)];
+      let rigth = grid[index(this.i+1,this.j,dif)];
+      let bottom = grid[index(this.i,this.j+1,dif)];
+      let left = grid[index(this.i-1,this.j,dif)];
+
+      if(!this.paredes[0] &amp;&amp; top &amp;&amp; !top.visited)
+          neighbors.push(top) //Ingresa el de arriba
+      if(!this.paredes[1] &amp;&amp; rigth &amp;&amp; !rigth.visited)
+          neighbors.push(rigth) //Ingresa el derecha
+      if(!this.paredes[2] &amp;&amp; bottom &amp;&amp; !bottom.visited)
+          neighbors.push(bottom) //Ingresa el de abajo
+      if(!this.paredes[3] &amp;&amp; left &amp;&amp; !left.visited)
+          neighbors.push(left) //Ingresa el de left
+
+      return (neighbors.length > 0) ? neighbors[Math.floor(Math.random() * neighbors.length)] : undefined;
+    }
+  }
+}
+
+/**
+* Exporta el objeto Cell
+* @module Cell
+*/
+
+/** Generar celda */
+module.exports = {
+  Cell: Cell
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Cell.html">Cell</a></li><li><a href="module-Maze.html">Maze</a></li><li><a href="module-Util.html">Util</a></li></ul><h3>Classes</h3><ul><li><a href="Cell.html">Cell</a></li><li><a href="MazeGen.html">MazeGen</a></li><li><a href="SolveGen.html">SolveGen</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backtracking">backtracking</a></li><li><a href="global.html#cells">cells</a></li><li><a href="global.html#checkNeighbors">checkNeighbors</a></li><li><a href="global.html#checkWalls">checkWalls</a></li><li><a href="global.html#drawMaze">drawMaze</a></li><li><a href="global.html#index">index</a></li><li><a href="global.html#initMaze">initMaze</a></li><li><a href="global.html#makePath">makePath</a></li><li><a href="global.html#quitarParedes">quitarParedes</a></li><li><a href="global.html#revisaVecino">revisaVecino</a></li><li><a href="global.html#solvebacktracking">solvebacktracking</a></li><li><a href="global.html#solveMaze">solveMaze</a></li><li><a href="global.html#toCell">toCell</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Sep 05 2016 02:31:27 GMT-0600 (CST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,28 +1,10 @@
-/*
-
-Proyecto 1 | Paradigmas de Programación
-
-II ciclo - 2016
-
-Laberinto Remoto|Local
-
-Grupo 1 - 8am
-
-Carlos Artavia Pineda
-Andrey Campos Sánchez
-Fabián Hernández Chavarria
-Omar Segura Villegas
-
-2016
-
-*/
-
 let initEvents = () => {
     let themaze = new TheMaze();
     themaze.anchoCelda = 30;
     const URL = 'http://localhost:3000/';
+    let crono = new Crono();
 
-    let genLocal = event => toPromise(event).then(_ => disappearWin())
+    let genLocal = event => toPromise(event).then( _ => disappearWin())
                                             .then( _ => initCanvas(themaze) )
                                             .then( _ => createMaze() )
                                             .then( maze => maze.init(themaze.tamano) )
@@ -56,78 +38,88 @@ let initEvents = () => {
                           .then( _ => drawMaze(themaze.solutionMaze, themaze.anchoCelda) )
                           .catch( error => console.log(error));
 
-$('#saveRemote').click( _ => {fetch(URL+'saveMaze', {method: 'POST', headers: myheader(), body: JSON.stringify({maze: themaze}) })
-                              .then(response => {console.log(response); return response;})
-                              .then(response => {response.json()})
-                              .then(response => console.log(response))
-                              .catch(err => console.log(err));});
 
-$('#remoteRecover').click( _ => fetch(URL+mazeNum(), {method: 'GET', headers: myheader(), mode: 'cors', cache: 'default' })
-                                .then(response => response.json())
-                                .then( response => {console.log(response[0].maze); return response;})
-                                .then( response => setTheMaze(response[0].maze))
-                                .then( _ => initCanvas(themaze))
-                                .then( _ => drawMaze(themaze.maze, themaze.anchoCelda))
-                                .then(_ => jugarContinuacion(themaze))
-                                .catch(err => console.log(err)));
+    let estadoBotones = () => $("#tjuego").change(event => toPromise(event).then(_ => activarBotones())
+                                                                           .catch(err => console.log(err)));
 
-/*$('#refreshMazes').click(_ => fetch('http://localhost:3000/getmazes', {method: 'GET', headers: myheader(), mode: 'cors', cache: 'default' })
-                        .then(response => (response.json()))
-                        .then(e => e.forEach(i => console.log(i)))
-                        .catch(err => console.log(err)));*/
+    //$('#mazeG').click( event => ( tipoJuego() == 0 ) ? genRemote() : genLocal(event) );
 
-//  $('#mazeG').click( event => ( tipoJuego() == 0 ) ? genRemote() : genLocal(event) );
+    //$('#mazeSolve').click( event => ( tipoJuego() == 0 ) ? solRemote() : solveLocal(event) );
+
+    $('#btncrono').click( event => toPromise(event).then(initView(crono))
+                                                   .then( _ => crono.worker.onmessage = response => toPromise(response)
+                                                                                                .then(response => setTimer(response, crono))
+                                                                                                .then(_ => updateView(crono)))
+                                                  .then( _ => startWork(crono))
+                                                  .catch(error => console.log(error)) )
 
 
-    $('#mazeG').click( event =>toPromise(event).then(_=> tipoJuego() == 0  ? genRemote() : genLocal(event) )
-                                               .then(_ => activarBotones())
+    $('#saveRemote').click( _ => fetch(URL+'saveMaze', {method: 'POST', headers: myheader(), body: JSON.stringify({maze: themaze}) })
+                                 .then(response => response.json())
+                                 .then(mostraId)
+                                 .catch(error => console.log(error)));
+
+    $('#remoteRecover').click( _ => fetch(URL+mazeNum(), {method: 'GET', headers: myheader(), mode: 'cors', cache: 'default' })
+                                  .then( response => response.json())
+                                  .then( response => setTheMaze(response[0].maze))
+                                  .then(_ => cambiarNivel(themaze.tamano))
+                                  .then( _ => initCanvas(themaze))
+                                  .then( _ => drawMaze(themaze.maze, themaze.anchoCelda))
+                                  .then( _ => jugarContinuacion(themaze))
+                                  .catch(err => console.log(err)));
+
+    $('#mazeG').click( event =>toPromise(event).then( _ => tipoJuego() == 0  ? genRemote() : genLocal(event) )
+                                               .then( _ => estadoBotones())
+                                               .then( _ => activarBotones())
                                                .catch(err => console.log(err)) );
 
-$("input").prop('disabled', false);
-  //$('#mazeSolve').click( event => {( tipoJuego() == 0 ) ? solRemote() : solveLocal(event);
-  //                                themaze.cursor.rastro = '#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6)} );
-
-  $('#mazeSolve').click( event =>toPromise(event).then(_ => (tipoJuego() == 0 ) ? solRemote() : solveLocal(event))
-                                                 .then(_ => themaze.cursor.rastro = '#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6) )
-                                                 .catch(err => console.log(err)));
+    $("input").prop('disabled', false);
 
 
-  $('#saveLocal').click(event => toPromise(event).then( _ => saveLocal(themaze)));
+    $('#mazeSolve').click( event =>toPromise(event).then( _ => (tipoJuego() == 0 ) ? solRemote() : solveLocal(event))
+                                                   .then( _ => randomColor(themaze))
+                                                   .catch(err => console.log(err)));
 
-  $('#recovery').click(event => toPromise(event).then( _ => retrieveLocal())
-                                                .then( newTheMaze => setTheMaze(newTheMaze) )
-                                                .then( _ => initCanvas(themaze, themaze.tamano) )
-                                                .then( _ => drawMaze(themaze.maze, themaze.anchoCelda) )
-                                                .then( _ => jugarContinuacion(themaze))
-                                                .catch(err => console.log(err)));
+    $('#saveLocal').click(event => toPromise(event).then( _ => saveLocal(themaze)));
+
+    $('#recovery').click(event => toPromise(event).then( _ => retrieveLocal())
+                                                  .then( newTheMaze => setTheMaze(newTheMaze) )
+                                                  .then(_ => cambiarNivel(themaze.tamano))
+                                                  .then( _ => initCanvas(themaze, themaze.tamano) )
+                                                  .then( _ => drawMaze(themaze.maze, themaze.anchoCelda) )
+                                                  .then( _ => jugarContinuacion(themaze))
+                                                  .catch(err => console.log(err)));
 
   let setMazeModel = maze => themaze.maze = maze;
   let setTheMaze = newTheMaze => themaze = newTheMaze;
   let setSolveMazeModel = maze => themaze.solutionMaze = maze;
 
-  let botonesRemotos = (_) => {
-    $('#remoteRecover').removeAttr('disabled');
-    $('#recovery').prop( "disabled", true);
-    $('#saveLocal').prop( "disabled", true);
-    $('#cargarRemoto').css( "display", 'inline');
-  };
-
-  let botonesLocales = (_) => {
-    $('#recovery').removeAttr('disabled');
-    $('#saveRemote').prop( "disabled", true);
-    $('#cargarRemoto').css( "display", 'none');
-    };
-
-  let activarBotones = () => {
-    $('#mazeSolve').removeAttr('disabled');
-    $('#saveLocal').removeAttr('disabled');
-    $('#saveRemote').removeAttr('disabled');
-    $('#saveImage').removeAttr('disabled');
-    tipoJuego() == 0 ? botonesRemotos() : botonesLocales();
-  };
-
   $('#saveImage').click(event => download());
+}
 
+let randomColor = themaze => themaze.cursor.rastro = '#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6);
+
+let botonesRemotos = () => {
+  $('#remoteRecover').removeAttr('disabled');
+  $('#recovery').prop( "disabled", true);
+  $('#saveLocal').prop( "disabled", true);
+  $('#cargarRemoto').css( "display", 'inline');
+}
+
+let botonesLocales = () => {
+  $('#recovery').removeAttr('disabled');
+  $('#saveRemote').prop( "disabled", true);
+  $('#cargarRemoto').css( "display", 'none');
+}
+
+let activarBotones = () => {
+  $('#sremote').css( "display", 'none');
+  $('#mazeSolve').removeAttr('disabled');
+  $('#saveLocal').removeAttr('disabled');
+  $('#saveRemote').removeAttr('disabled');
+  $('#saveImage').removeAttr('disabled');
+  localStorage.getItem('themaze') ?  $('#recovery').removeAttr('disabled')  :$('#recovery').prop( "disabled", true);
+  tipoJuego() == 0 ? botonesRemotos() : botonesLocales();
 }
 
 let download = () => {
@@ -139,7 +131,15 @@ let download = () => {
   aLink.download = 'image.jpg';
   aLink.href = image;
   aLink.dispatchEvent(evt);
-};
+}
+
+let jugarContinuacion = themaze => {
+  $(window).off('keydown');
+  (INTER)? clearInterval(INTER) : false;
+  makeShip(themaze.cursor);
+  INTER = setInterval(doGameLoop, 100,getCanvasContext("canvas"),themaze.cursor); // jugar hasta acabar
+  $(window).on('keydown', e => whatKey(e,themaze.maze,themaze.cursor));
+}
 
 let createMaze = () => new mazec.MazeGen();
 
@@ -157,6 +157,8 @@ let tamanoActual = () => parseInt($("#dificultad")[0].value);
 
 let initCanvas = (themaze, tamano = tamanoActual()) => { themaze.tamano = tamano; setCanvasSize(themaze.tamano,'canvas',themaze.anchoCelda)};
 
+let cambiarNivel = tamano => $('#dificultad').val(parseInt(tamano)).change();
+
 let toPromise = object => Promise.resolve(object);
 
 let myheader = () => new Headers( { "Content-Type" : "application/json" } );
@@ -173,20 +175,28 @@ let jugar = themaze => {
   $(window).on('keydown', e => whatKey(e,themaze.maze,themaze.cursor));
 }
 
-let jugarContinuacion = themaze => {
-  $(window).off('keydown');
-  (INTER)? clearInterval(INTER) : false;
-  makeShip(themaze.cursor);
-  INTER = setInterval(doGameLoop, 100,getCanvasContext("canvas"),themaze.cursor); // jugar hasta acabar
-  $(window).on('keydown', e => whatKey(e,themaze.maze,themaze.cursor));
+let saveLocal = themaze => {
+  localStorage.setItem('themaze',JSON.stringify(themaze));
+  $('#recovery').removeAttr('disabled');
 }
-
-let saveLocal = themaze => localStorage.setItem('themaze',JSON.stringify(themaze));
 
 let retrieveLocal = () => JSON.parse(localStorage.getItem('themaze'));
 
-/*let updateMazes = _ => (fetch(URL+'getMazesID', {method: 'GET', headers: myheader(), mode: 'cors', cache: 'default' })
-                        .then(response => response.json())
-                        .then(mazes => $.each(mazes, (key, value) => ($('#availableMazes').append($('<option></option>')).attr('value',value.id).text(key.id))))
-);
-*/
+let updateView = crono => crono.timertxt.value = crono.timercount;
+
+let setTimer = (res, crono) => crono.timercount = res.data;
+
+let postMsg = crono => crono.worker.postMessage({timercount: crono.timercount, timestart: crono.timestart});
+
+let startWork = crono => setInterval(_ => postMsg(crono), 10);
+
+let initView = crono => {
+  crono.timestart = new Date();
+  crono.timertxt = document.timeform.timetextarea;
+  crono.timertxt.value = "00:00";
+}
+
+let mostraId = response =>{
+  $('#sid').html(response);
+  $('#sremote').css( "display", 'inline');
+}

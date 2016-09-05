@@ -71,8 +71,9 @@ router.post('/solveMaze', (req,res) => promise(req).then( _ => res.setHeader('Co
 
 router.post('/saveMaze', (req,res) => promise(req).then( _ => new Maze())
                                                   .then( maze => {maze.maze = req.body.maze; return maze;})
-                                                  .then(maze => {maze.save(); return new Maze();})
-                                                  .then(_ => res.send('asdnasd'))
+                                                  .then(maze => maze.save())
+                                                  .then( _ => Maze.findOne().sort({ $natural: -1 })
+                                                                            .exec((err, post) => res.json(post.id)))
                                                   .catch(error => console.log(error))
 );
 
@@ -88,6 +89,6 @@ router.get('/getmazes', (req,res) => Maze.find().exec().then(_ => console.log('a
                                                          .catch(err => console.log(err))
 );
 
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
   console.log('Server is listening on port 3000!');
 });
