@@ -25,7 +25,8 @@ class TheMaze{
     this.remote = true;
     this.worker = undefined;
     this.tamano = 0;
-    this.cursor = undefined;
+    this.cursor = new Cursor();
+//    this.rastro = new Imagen();
     }
 }
 
@@ -37,6 +38,6 @@ class Cursor{
     this.AnteriorY = 0;
     this.ImgCursor =new Image();
     this.fondo = new Image();
-    this.rastro= new Image();
+  this.rastro= '#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6);
   }
 }

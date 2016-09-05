@@ -101,3 +101,8 @@ Omar Segura Villegas
   opacity: 0.6;
   transition: opacity ease 0.5s;
 }
+
+#win {
+    display: none;
+    text-align: center;
+}
