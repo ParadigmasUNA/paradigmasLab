@@ -1,22 +1,3 @@
-/*
-
-Proyecto 1 | Paradigmas de Programación
-
-II ciclo - 2016
-
-Laberinto Remoto|Local
-
-Grupo 1 - 8am
-
-Carlos Artavia Pineda
-Andrey Campos Sánchez
-Fabián Hernández Chavarria
-Omar Segura Villegas
-
-2016
-
-*/
-
 let initEvents = () => {
     let themaze = new TheMaze();
     themaze.anchoCelda = 30;
@@ -61,6 +42,10 @@ let initEvents = () => {
 
     let estadoBotones = () => $("#tjuego").change(event => toPromise(event).then(_ => activarBotones())
                                                                            .catch(err => console.log(err)));
+
+  $('#mazeG').click( event => ( tipoJuego() == 0 ) ? genRemote() : genLocal(event) );
+
+  $('#mazeSolve').click( event => ( tipoJuego() == 0 ) ? solRemote() : solveLocal(event) );
 
     $('#btncrono').click( event => toPromise(event).then(initView(crono))
                                                    .then( _ => crono.worker.onmessage = response => toPromise(response)
