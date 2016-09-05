@@ -38,17 +38,17 @@ Omar Segura Villegas
 
 
 
-  <body onload="initEvents();" style="background-color: #DFE4FF">
+  <body onload="initEvents();" id="body">
 
 
     <div class="container">
-      <nav class="navbar navbar-default navbar-static-top v" role="navigation" style="margin-bottom: 0">
-            <a class="navbar-brand" style=" font-family: Lucida Console"><span class="glyphicon glyphicon-play"> </span>The Maze Generator</a>
-            <a id ="cargarRemoto" href="#" data-toggle="modal" data-target="#login-modal" class="navbar-brand navbar-right" style=" font-family: Lucida Console">
+      <nav class="navbar navbar-default navbar-static-top v" role="navigation" id="navP" >
+            <a class="navbar-brand" id ="mazeGt"><span class="glyphicon glyphicon-play"> </span>The Maze Generator</a>
+            <a id ="cargarRemoto" href="#" data-toggle="modal" data-target="#login-modal" class="navbar-brand navbar-right">
               Cargar Maze Remoto<span class="glyphicon glyphicon-user" > </span>
             </a>
       </nav>
-      <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="loginmodal-container">
             <h1>Recuperar Maze Remoto</h1><br>
@@ -62,9 +62,9 @@ Omar Segura Villegas
 
     <div class="row">
       <div class="col-md-4" >
-        <div class="navbar-default sidebar" role="navigation" style="background-color: #DFE4FF">
+        <div class="navbar-default sidebar" role="navigation" id="sBar">
             <div class="sidebar-nav navbar-collapse">
-                <ul class="nav" style="margin: 15%">
+                <ul id="listBtn"class="nav">
                   <li>
                     <button type="button" id ="mazeG" class="btn btn-primary btn-block" >
                       <span class="glyphicon glyphicon-road"></span> Generar Maze
@@ -97,7 +97,7 @@ Omar Segura Villegas
             </div>
         </div>
       </div>
-      <div class="col-md-8" style="background-color: #DFE4FF" >
+      <div class="col-md-8" id="gameZ">
         <div class="">
           <label >Tipo de Juego</label>
           <select id="tjuego"/>

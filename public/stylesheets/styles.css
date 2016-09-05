@@ -106,3 +106,21 @@ Omar Segura Villegas
     display: none;
     text-align: center;
 }
+
+#body, #sBar, #gameZ {
+  background-color: #DFE4FF;
+}
+#navP {
+  margin-bottom: 0;
+}
+
+#mazeGt, #cargarRemoto {
+  font-family: Lucida Console;
+}
+
+#loginmodal {
+  display: none;
+}
+#listBtn {
+  margin: 15%;
+}
