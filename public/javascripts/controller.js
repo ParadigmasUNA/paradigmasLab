@@ -3,7 +3,6 @@ let initEvents = () => {
     themaze.anchoCelda = 30;
     const URL = 'http://localhost:3000/';
     let crono = new Crono();
-    crono.timestart = new Date();
 
     let genLocal = event => toPromise(event).then(_ => disappearWin())
                                             .then( _ => initCanvas(themaze) )
@@ -54,7 +53,10 @@ let initEvents = () => {
                                                   .then( _ => startWork(crono))
                                                   .catch(error => console.log(error)) )
 
-    $('#saveRemote').click( _ => fetch(URL+'saveMaze', {method: 'POST', headers: myheader(), body: JSON.stringify({maze: themaze}) }) );
+    $('#saveRemote').click( _ => fetch(URL+'saveMaze', {method: 'POST', headers: myheader(), body: JSON.stringify({maze: themaze}) })
+                                 .then(response => response.json())
+                                 .then(response => $('#sid').html(response))
+                                 .catch(error => console.log(error)));
 
     $('#remoteRecover').click( _ => fetch(URL+mazeNum(), {method: 'GET', headers: myheader(), mode: 'cors', cache: 'default' })
                                   .then(response => response.json())
@@ -182,6 +184,7 @@ let postMsg = crono => crono.worker.postMessage({timercount: crono.timercount, t
 let startWork = crono => setInterval(_ => postMsg(crono), 10);
 
 let initView = crono => {
+  crono.timestart = new Date();
   crono.timertxt = document.timeform.timetextarea;
   crono.timertxt.value = "00:00";
 }

@@ -72,6 +72,8 @@ router.post('/solveMaze', (req,res) => promise(req).then( _ => res.setHeader('Co
 router.post('/saveMaze', (req,res) => promise(req).then( _ => new Maze())
                                                   .then( maze => {maze.maze = req.body.maze; return maze;})
                                                   .then(maze => maze.save())
+                                                  .then( _ => Maze.findOne().sort({ $natural: -1 })
+                                                                            .exec((err, post) => res.json(post.id)))
                                                   .catch(error => console.log(error))
 );
 

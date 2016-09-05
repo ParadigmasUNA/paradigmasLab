@@ -1,3 +1,21 @@
+/*
+
+Proyecto 1 | Paradigmas de Programación
+
+II ciclo - 2016
+
+Laberinto Remoto|Local
+
+Grupo 1 - 8am
+
+Carlos Artavia Pineda
+Andrey Campos Sánchez
+Fabián Hernández Chavarria
+Omar Segura Villegas
+
+2016
+
+*/
 onmessage = function(e){
   let timercount = e.data.timercount;
   let timestart = e.data.timestart;

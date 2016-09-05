@@ -61,7 +61,7 @@ let doGameLoop = (ctx,Cursor) => {
 
 let whatKey = (evt, grid,Cursor) => {
   grid.forEach(x => mostrar(x,30,Cursor.rastro));
-  muros = SaberMuros(grid,Cursor);
+  let muros = SaberMuros(grid,Cursor);
   Sabercell(grid,Cursor).path = 1;
   Cursor.AnteriorX = Cursor.ActualX;
   Cursor.AnteriorY = Cursor.ActualY;
