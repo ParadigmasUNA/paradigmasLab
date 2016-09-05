@@ -18,10 +18,14 @@ let setCanvasSize = (tamano,canvasId,anchoCelda) => {
 let HaceRastro = (contexto,Cursor) =>{
   contexto.beginPath();
   contexto.rect(Cursor.ActualX,Cursor.ActualY,30,30);
-  contexto.fillStyle = '#A6AEBF';
+  contexto.fillStyle = Cursor.rastro;
   contexto.fill();
   contexto.closePath();
 }
+
+
+
+
 
 let makeShip = (Cursor) => {
   let ctx = getCanvasContext('canvas');
@@ -38,7 +42,7 @@ let doGameLoop = (ctx,Cursor) => {
 
 
 function whatKey(evt, grid,Cursor) {
-  grid.forEach(x => mostrar(x,30)); //reconstruye el maze
+  grid.forEach(x => mostrar(x,30,Cursor.rastro)); //reconstruye el maze
   muros = SaberMuros(grid,Cursor);
   Sabercell(grid,Cursor).path = 1;
   Cursor.AnteriorX = Cursor.ActualX;
@@ -81,7 +85,7 @@ let tamano_ = tam => parseInt($("#dificultad")[0].value)*tam;
 let Sabercell = (grid,Cursor) => grid[indice(Cursor)];
 
 
-let mostrar = (cell,ancho) =>{
+let mostrar = (cell,ancho,Rastro ='#A6AEBF')  =>{
   let x = cell.i * ancho;
   let y = cell.j * ancho;
   let ctx = getCanvasContext('canvas');
@@ -95,7 +99,7 @@ let mostrar = (cell,ancho) =>{
     line(ctx,x,y+ancho,x,y);
   if(cell.path == 1){
     ctx.rect(x,y,ancho,ancho);
-    ctx.fillStyle = '#A6AEBF';
+    ctx.fillStyle = Rastro;
     ctx.fill();
   }
 }
