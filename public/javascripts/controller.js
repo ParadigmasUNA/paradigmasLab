@@ -20,7 +20,7 @@ Omar Segura Villegas
 let initEvents = () => {
     let themaze = new TheMaze();
     themaze.anchoCelda = 30;
-    const URL = 'http://localhost:3000/'
+    const URL = 'http://localhost:3000/';
 
     let genLocal = event => toPromise(event).then(_ => disappearWin())
                                             .then( _ => initCanvas(themaze) )
@@ -54,9 +54,13 @@ let initEvents = () => {
                           .then( maze => setSolveMazeModel(maze))
                           .then( _ => initCanvas(themaze) )
                           .then( _ => drawMaze(themaze.solutionMaze, themaze.anchoCelda) )
-                          .catch( error => console.log(error) )
+                          .catch( error => console.log(error));
 
-$('#saveRemote').click( _ => fetch(URL+'saveMaze', {method: 'POST', headers: myheader(), body: JSON.stringify({maze: themaze}) }) );
+$('#saveRemote').click( _ => {fetch(URL+'saveMaze', {method: 'POST', headers: myheader(), body: JSON.stringify({maze: themaze}) })
+                              .then(response => {console.log(response); return response;})
+                              .then(response => {response.json()})
+                              .then(response => console.log(response))
+                              .catch(err => console.log(err));});
 
 $('#remoteRecover').click( _ => fetch(URL+mazeNum(), {method: 'GET', headers: myheader(), mode: 'cors', cache: 'default' })
                                 .then(response => response.json())
@@ -66,6 +70,11 @@ $('#remoteRecover').click( _ => fetch(URL+mazeNum(), {method: 'GET', headers: my
                                 .then( _ => drawMaze(themaze.maze, themaze.anchoCelda))
                                 .then(_ => jugarContinuacion(themaze))
                                 .catch(err => console.log(err)));
+
+/*$('#refreshMazes').click(_ => fetch('http://localhost:3000/getmazes', {method: 'GET', headers: myheader(), mode: 'cors', cache: 'default' })
+                        .then(response => (response.json()))
+                        .then(e => e.forEach(i => console.log(i)))
+                        .catch(err => console.log(err)));*/
 
 //  $('#mazeG').click( event => ( tipoJuego() == 0 ) ? genRemote() : genLocal(event) );
 
@@ -175,3 +184,9 @@ let jugarContinuacion = themaze => {
 let saveLocal = themaze => localStorage.setItem('themaze',JSON.stringify(themaze));
 
 let retrieveLocal = () => JSON.parse(localStorage.getItem('themaze'));
+
+/*let updateMazes = _ => (fetch(URL+'getMazesID', {method: 'GET', headers: myheader(), mode: 'cors', cache: 'default' })
+                        .then(response => response.json())
+                        .then(mazes => $.each(mazes, (key, value) => ($('#availableMazes').append($('<option></option>')).attr('value',value.id).text(key.id))))
+);
+*/

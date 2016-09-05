@@ -71,12 +71,21 @@ router.post('/solveMaze', (req,res) => promise(req).then( _ => res.setHeader('Co
 
 router.post('/saveMaze', (req,res) => promise(req).then( _ => new Maze())
                                                   .then( maze => {maze.maze = req.body.maze; return maze;})
-                                                  .then(maze => maze.save())
+                                                  .then(maze => {maze.save(); return new Maze();})
+                                                  .then(_ => res.send('asdnasd'))
                                                   .catch(error => console.log(error))
 );
 
-router.get('/:id', (req,res) => Maze.find({id: req.params.id}).exec().then(maze => res.send(maze))
-                                                                     .catch(error =>  console.log(error))
+router.get('/:id', (req,res) => Maze.find({id: req.params.id}).exec()
+                                                              .then(maze => res.send(maze))
+                                                              .catch(error =>  console.log(error))
+);
+
+router.get('/getmazes', (req,res) => Maze.find().exec().then(_ => console.log('ansdnasdnsa'))
+                                                .then(mazes => {console.log(mazes); return mazes})
+                                                         .then(mazes => res.send(mazes))
+                                                         .then( _ => console.log('Maazees'))
+                                                         .catch(err => console.log(err))
 );
 
 app.listen(3000, function () {
