@@ -61,6 +61,7 @@ let initEvents = () => {
     $('#remoteRecover').click( _ => fetch(URL+mazeNum(), {method: 'GET', headers: myheader(), mode: 'cors', cache: 'default' })
                                   .then( response => response.json())
                                   .then( response => setTheMaze(response[0].maze))
+                                  .then(_ => cambiarNivel(themaze.tamano))
                                   .then( _ => initCanvas(themaze))
                                   .then( _ => drawMaze(themaze.maze, themaze.anchoCelda))
                                   .then( _ => jugarContinuacion(themaze))
@@ -82,6 +83,7 @@ let initEvents = () => {
 
     $('#recovery').click(event => toPromise(event).then( _ => retrieveLocal())
                                                   .then( newTheMaze => setTheMaze(newTheMaze) )
+                                                  .then(_ => cambiarNivel(themaze.tamano))
                                                   .then( _ => initCanvas(themaze, themaze.tamano) )
                                                   .then( _ => drawMaze(themaze.maze, themaze.anchoCelda) )
                                                   .then( _ => jugarContinuacion(themaze))
@@ -130,6 +132,14 @@ let download = () => {
   aLink.dispatchEvent(evt);
 }
 
+let jugarContinuacion = themaze => {
+  $(window).off('keydown');
+  (INTER)? clearInterval(INTER) : false;
+  makeShip(themaze.cursor);
+  INTER = setInterval(doGameLoop, 100,getCanvasContext("canvas"),themaze.cursor); // jugar hasta acabar
+  $(window).on('keydown', e => whatKey(e,themaze.maze,themaze.cursor));
+}
+
 let createMaze = () => new mazec.MazeGen();
 
 let createSolveMaze = () => new mazec.SolveGen();
@@ -146,6 +156,8 @@ let tamanoActual = () => parseInt($("#dificultad")[0].value);
 
 let initCanvas = (themaze, tamano = tamanoActual()) => { themaze.tamano = tamano; setCanvasSize(themaze.tamano,'canvas',themaze.anchoCelda)};
 
+let cambiarNivel = tamano => $('#dificultad').val(parseInt(tamano)).change();
+
 let toPromise = object => Promise.resolve(object);
 
 let myheader = () => new Headers( { "Content-Type" : "application/json" } );
@@ -157,14 +169,6 @@ let jugar = themaze => {
   $(window).off('keydown');
   (INTER)? clearInterval(INTER) : false;
   themaze.cursor = new Cursor();
-  makeShip(themaze.cursor);
-  INTER = setInterval(doGameLoop, 100,getCanvasContext("canvas"),themaze.cursor); // jugar hasta acabar
-  $(window).on('keydown', e => whatKey(e,themaze.maze,themaze.cursor));
-}
-
-let jugarContinuacion = themaze => {
-  $(window).off('keydown');
-  (INTER)? clearInterval(INTER) : false;
   makeShip(themaze.cursor);
   INTER = setInterval(doGameLoop, 100,getCanvasContext("canvas"),themaze.cursor); // jugar hasta acabar
   $(window).on('keydown', e => whatKey(e,themaze.maze,themaze.cursor));
