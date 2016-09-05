@@ -1,4 +1,4 @@
-<!-- 
+<!--
 
 Proyecto 1 | Paradigmas de Programación
 
@@ -27,6 +27,7 @@ Omar Segura Villegas
     <script src="javascripts/model.js"></script>
     <script src="javascripts/draw.js"></script>
     <script src="javascripts/mazec.js"></script>
+    <script src="javascripts/crono.js"></script>
     <script src="/jquery/jquery.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -125,20 +126,14 @@ Omar Segura Villegas
         <h3><br> You Win :)</br></h3>
       </div>
     </div>
+    <div>
+      <form name="timeform">
+        Time: <input type=text name="timetextarea" value="00:00" size="10" style = "font-size:20px">
+        <br>
+        <br>
+        <input type=button id="btncrono" name="start" value="Start">
+      </form>
+    </div>
   </div>
-
-    <!--
-    <button id="mazeG">Generar Maze</button>
-    <br>
-    <br>
-    <button id='mongoPost'> Mongo Post </button>
-    <button id='mongoGet'> Mongo Get </button>
-    <input type="text" id="field" disabled="true"></input>
-    <canvas id="canvas">
-    </canvas>
-    <button id="mazeSolve">Generar Solucion</button>
-    <button id="saveLocal">Guardar Local</button>
-    <button id="recovery">Recuperar Maze</button>
-    -->
   <body>
 </html>

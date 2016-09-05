@@ -20,7 +20,9 @@ Omar Segura Villegas
 let initEvents = () => {
     let themaze = new TheMaze();
     themaze.anchoCelda = 30;
-    const URL = 'http://localhost:3000/'
+    const URL = 'http://localhost:3000/';
+    let crono = new Crono();
+    crono.timestart = new Date();
 
     let genLocal = event => toPromise(event).then(_ => disappearWin())
                                             .then( _ => initCanvas(themaze) )
@@ -55,6 +57,13 @@ let initEvents = () => {
                           .then( _ => initCanvas(themaze) )
                           .then( _ => drawMaze(themaze.solutionMaze, themaze.anchoCelda) )
                           .catch( error => console.log(error) )
+
+$('#btncrono').click( event => toPromise(event).then(initView(crono))
+                                               .then( _ => crono.worker.onmessage = response => toPromise(response)
+                                                                                                .then(response => setTimer(response, crono))
+                                                                                                .then(_ => updateView(crono)))
+                                               .then( _ => startWork(crono))
+                                               .catch(error => console.log(error)) )
 
 $('#saveRemote').click( _ => fetch(URL+'saveMaze', {method: 'POST', headers: myheader(), body: JSON.stringify({maze: themaze}) }) );
 
@@ -175,3 +184,16 @@ let jugarContinuacion = themaze => {
 let saveLocal = themaze => localStorage.setItem('themaze',JSON.stringify(themaze));
 
 let retrieveLocal = () => JSON.parse(localStorage.getItem('themaze'));
+
+let updateView = crono => crono.timertxt.value = crono.timercount;
+
+let setTimer = (res, crono) => crono.timercount = res.data;
+
+let postMsg = crono => crono.worker.postMessage({timercount: crono.timercount, timestart: crono.timestart});
+
+let startWork = crono => setInterval(_ => postMsg(crono), 10);
+
+let initView = crono => {
+  crono.timertxt = document.timeform.timetextarea;
+  crono.timertxt.value = "00:00";
+}
