@@ -59,14 +59,8 @@ let doGameLoop = (ctx,Cursor) => {
   ctx.putImageData(Cursor.ImgCursor, Cursor.ActualX,Cursor.ActualY);
 }
 
-
-/*<<<<<<< HEAD
-function whatKey(evt, grid,Cursor) {
-  grid.forEach(x => mostrar(x,30,Cursor.rastro)); //reconstruye el maze
-=======*/
 let whatKey = (evt, grid,Cursor) => {
-  grid.forEach(x => mostrar(x,30,Cursos.rastro)); //reconstruye el maze
-/*>>>>>>> 011729d21e48635dd037a9dd042add7b72486e6f*/
+  grid.forEach(x => mostrar(x,30,Cursor.rastro));
   muros = SaberMuros(grid,Cursor);
   Sabercell(grid,Cursor).path = 1;
   Cursor.AnteriorX = Cursor.ActualX;
