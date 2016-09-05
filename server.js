@@ -79,6 +79,6 @@ router.get('/:id', (req,res) => Maze.find({id: req.params.id}).exec().then(maze 
                                                                      .catch(error =>  console.log(error))
 );
 
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
   console.log('Server is listening on port 3000!');
 });
