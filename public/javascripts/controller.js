@@ -43,11 +43,10 @@ let initEvents = () => {
     let estadoBotones = () => $("#tjuego").change(event => toPromise(event).then(_ => activarBotones())
                                                                            .catch(err => console.log(err)));
 
-<<<<<<< HEAD
   $('#mazeG').click( event => ( tipoJuego() == 0 ) ? genRemote() : genLocal(event) );
 
   $('#mazeSolve').click( event => ( tipoJuego() == 0 ) ? solRemote() : solveLocal(event) );
-=======
+
     $('#btncrono').click( event => toPromise(event).then(initView(crono))
                                                    .then( _ => crono.worker.onmessage = response => toPromise(response)
                                                                                                 .then(response => setTimer(response, crono))
@@ -77,7 +76,6 @@ let initEvents = () => {
     $('#mazeSolve').click( event =>toPromise(event).then(_ => (tipoJuego() == 0 ) ? solRemote() : solveLocal(event))
                                                    .then(_ => themaze.cursor.rastro = '#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6) )
                                                    .catch(err => console.log(err)));
->>>>>>> cffce785a1319ba879cc04bc1654bcd5768d8d07
 
     $('#saveLocal').click(event => toPromise(event).then( _ => saveLocal(themaze)));
 
