@@ -1,22 +1,3 @@
-/*
-
-Proyecto 1 | Paradigmas de Programación
-
-II ciclo - 2016
-
-Laberinto Remoto|Local
-
-Grupo 1 - 8am
-
-Carlos Artavia Pineda
-Andrey Campos Sánchez
-Fabián Hernández Chavarria
-Omar Segura Villegas
-
-2016
-
-*/
-
 let initEvents = () => {
     let themaze = new TheMaze();
     themaze.anchoCelda = 30;
@@ -67,21 +48,9 @@ $('#remoteRecover').click( _ => fetch(URL+mazeNum(), {method: 'GET', headers: my
                                 .then(_ => jugarContinuacion(themaze))
                                 .catch(err => console.log(err)));
 
-//  $('#mazeG').click( event => ( tipoJuego() == 0 ) ? genRemote() : genLocal(event) );
+  $('#mazeG').click( event => ( tipoJuego() == 0 ) ? genRemote() : genLocal(event) );
 
-
-    $('#mazeG').click( event =>toPromise(event).then(_=> tipoJuego() == 0  ? genRemote() : genLocal(event) )
-                                               .then(_ => activarBotones())
-                                               .catch(err => console.log(err)) );
-
-$("input").prop('disabled', false);
-  //$('#mazeSolve').click( event => {( tipoJuego() == 0 ) ? solRemote() : solveLocal(event);
-  //                                themaze.cursor.rastro = '#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6)} );
-
-  $('#mazeSolve').click( event =>toPromise(event).then(_ => (tipoJuego() == 0 ) ? solRemote() : solveLocal(event))
-                                                 .then(_ => themaze.cursor.rastro = '#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6) )
-                                                 .catch(err => console.log(err)));
-
+  $('#mazeSolve').click( event => ( tipoJuego() == 0 ) ? solRemote() : solveLocal(event) );
 
   $('#saveLocal').click(event => toPromise(event).then( _ => saveLocal(themaze)));
 
@@ -95,27 +64,6 @@ $("input").prop('disabled', false);
   let setMazeModel = maze => themaze.maze = maze;
   let setTheMaze = newTheMaze => themaze = newTheMaze;
   let setSolveMazeModel = maze => themaze.solutionMaze = maze;
-
-  let botonesRemotos = (_) => {
-    $('#remoteRecover').removeAttr('disabled');
-    $('#recovery').prop( "disabled", true);
-    $('#saveLocal').prop( "disabled", true);
-    $('#cargarRemoto').css( "display", 'inline');
-  };
-
-  let botonesLocales = (_) => {
-    $('#recovery').removeAttr('disabled');
-    $('#saveRemote').prop( "disabled", true);
-    $('#cargarRemoto').css( "display", 'none');
-    };
-
-  let activarBotones = () => {
-    $('#mazeSolve').removeAttr('disabled');
-    $('#saveLocal').removeAttr('disabled');
-    $('#saveRemote').removeAttr('disabled');
-    $('#saveImage').removeAttr('disabled');
-    tipoJuego() == 0 ? botonesRemotos() : botonesLocales();
-  };
 
   $('#saveImage').click(event => download());
 
