@@ -102,7 +102,7 @@ Omar Segura Villegas
   transition: opacity ease 0.5s;
 }
 
-#win {
+#win, #sremote {
     display: none;
     text-align: center;
 }

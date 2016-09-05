@@ -25,7 +25,7 @@ class TheMaze{
     this.remote = true;
     this.tamano = 0;
     this.cursor = new Cursor();
-//    this.rastro = new Imagen();
+    this.inter = undefined;
     }
 }
 
